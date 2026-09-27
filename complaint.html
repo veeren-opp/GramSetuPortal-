@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>File a Complaint | GramSetu — Sundarpur Gram Panchayat</title>
+  <meta name="description" content="Register a civic grievance with photographic proof. Directly notify Sundarpur Gram Panchayat administration.">
+  
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,500;0,600;0,700;1,500&family=Hind:wght@400;500;600;700&display=swap" rel="stylesheet">
+  
+  <!-- Stylesheet -->
+  <link rel="stylesheet" href="css/style.css">
+  
+  <style>
+    .form-container {
+      max-width: 840px;
+      margin: 0 auto;
+    }
+    .form-section-title {
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--primary-900);
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      margin-bottom: 0.9rem;
+      padding-bottom: 0.4rem;
+      border-bottom: 1px solid var(--border-soil);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Top Government Strip -->
+  <div class="top-gov-strip">
+    <div class="wrap">
+      <div class="top-gov-info">
+        <span>🏛️ Department of Panchayati Raj • Government of Maharashtra</span>
+        <span class="panchayat-pill">Sundarpur Gram Panchayat Grievance Registration</span>
+      </div>
+      <div class="top-gov-right">
+        <a href="citizen.html" style="color:#EFE8D6; text-decoration:none;">← Return to Dashboard</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Header -->
+  <header class="site-header">
+    <div class="wrap">
+      <a href="index.html" class="brand">
+        <div class="brand-emblem">🌾</div>
+        <div class="brand-title">
+          <span class="brand-name">GramSetu <small>Citizen Grievance Redressal Form</small></span>
+        </div>
+      </a>
+
+      <nav class="site-nav">
+        <a href="citizen.html">📊 Citizen Dashboard</a>
+        <a href="complaint.html" class="active">➕ File Complaint</a>
+        <a href="track.html">🔍 Track Grievance</a>
+      </nav>
+
+      <div class="nav-right-actions">
+        <div id="headerAuthContainer"></div>
+        <button class="mobile-nav-toggle" aria-label="Toggle navigation">☰</button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main class="main-content" style="padding: 2.5rem 0 4rem;">
+    <div class="wrap">
+      
+      <div class="form-container">
+        
+        <!-- Page Title & Guidance -->
+        <div style="margin-bottom: 2rem;">
+          <a href="citizen.html" style="font-size: 0.84rem; color: var(--primary-700); font-weight: 600; text-decoration: none;">
+            ← Back to Dashboard
+          </a>
+          <h1 style="font-size: 2rem; color: var(--primary-900); margin: 0.4rem 0 0.3rem;">
+            Register a Public Grievance
+          </h1>
+          <p style="font-size: 0.92rem; color: var(--text-muted); margin: 0; line-height: 1.5;">
+            Fill out the details below and attach a photograph of the issue. You will receive an official tracking ID (e.g. <code>CMP-2026-0006</code>) to monitor the resolution progress.
+          </p>
+        </div>
+
+        <!-- Grievance Form Card -->
+        <div class="card" style="box-shadow: var(--shadow-md); border-top: 4px solid var(--accent-ochre);">
+          
+          <form id="grievanceForm" novalidate>
+            
+            <!-- SECTION 1: CITIZEN INFORMATION -->
+            <div class="form-section-title">1. Citizen Contact Details</div>
+            
+            <div class="form-row">
+              <div class="form-group">
+                <label for="citizenNameInput">Citizen Full Name</label>
+                <input type="text" id="citizenNameInput" class="form-control" readonly style="background: #EFE7D8; cursor: not-allowed;">
+                <span class="form-hint">Auto-filled from your registered account</span>
+              </div>
+
+              <div class="form-group">
+                <label for="citizenEmailInput">Email Address</label>
+                <input type="email" id="citizenEmailInput" class="form-control" readonly style="background: #EFE7D8; cursor: not-allowed;">
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="citizenPhoneInput">Contact Mobile Number <span class="req">*</span></label>
+              <input type="tel" id="citizenPhoneInput" class="form-control" placeholder="+91 xxxxx xxxxx" maxlength="15">
+              <span class="form-hint">Used by maintenance crew if location clarification is required.</span>
+            </div>
+
+            <!-- SECTION 2: ISSUE SPECIFICATIONS -->
+            <div class="form-section-title" style="margin-top: 2rem;">2. Grievance Details & Location</div>
+
+            <!-- Title -->
+            <div class="form-group">
+              <label for="complaintTitle">Grievance Summary / Title <span class="req">*</span></label>
+              <input type="text" id="complaintTitle" class="form-control" placeholder="e.g. Broken Handpump Handle near Gandhi Chowk" maxlength="120" required>
+              <span class="form-error-msg" id="complaintTitleError"></span>
+              <span class="form-hint">Brief, clear summary of the problem (min 5 characters)</span>
+            </div>
+
+            <!-- Category & Priority Row -->
+            <div class="form-row">
+              
+              <div class="form-group">
+                <label for="complaintCategory">Issue Category <span class="req">*</span></label>
+                <select id="complaintCategory" class="form-control" required>
+                  <option value="">-- Select Category --</option>
+                  <option value="Water Supply">💧 Water Supply (Handpump / Pipeline)</option>
+                  <option value="Street Lights">💡 Street Lights & Electricity</option>
+                  <option value="Roads">🛣️ Roads, Potholes & Footpaths</option>
+                  <option value="Drainage">🌊 Drainage & Sewage Overflow</option>
+                  <option value="Sanitation">🧹 Village Sanitation & Cleanliness</option>
+                  <option value="Electricity">⚡ Power Grid & Pole Leaning</option>
+                  <option value="Waste Management">🗑️ Solid Waste / Garbage Heap</option>
+                  <option value="Other">📋 Other Civic Grievance</option>
+                </select>
+                <span class="form-error-msg" id="complaintCategoryError"></span>
+              </div>
+
+              <div class="form-group">
+                <label for="complaintPriority">Urgency Level <span class="req">*</span></label>
+                <select id="complaintPriority" class="form-control" required>
+                  <option value="Low">🟢 Low — Regular maintenance</option>
+                  <option value="Medium" selected>🟡 Medium — Needs attention within 48h</option>
+                  <option value="High">🔴 High — Immediate hazard or drinking water issue</option>
+                </select>
+              </div>
+
+            </div>
+
+            <!-- Ward & Location Row -->
+            <div class="form-row">
+              
+              <div class="form-group">
+                <label for="complaintWard">Select Ward <span class="req">*</span></label>
+                <select id="complaintWard" class="form-control" required>
+                  <option value="">-- Select Ward Coverage --</option>
+                  <option value="Ward 1 - Shivaji Nagar">Ward 1 - Shivaji Nagar (Bhavan Area)</option>
+                  <option value="Ward 2 - Shanti Nagar">Ward 2 - Shanti Nagar (School Area)</option>
+                  <option value="Ward 3 - Bazar Peth">Ward 3 - Bazar Peth (Market Road)</option>
+                  <option value="Ward 4 - Gandhi Chowk">Ward 4 - Gandhi Chowk (Temple Area)</option>
+                  <option value="Ward 5 - Ambedkar Colony">Ward 5 - Ambedkar Colony</option>
+                  <option value="Ward 6 - Kranti Nagar">Ward 6 - Kranti Nagar (Outskirts)</option>
+                </select>
+                <span class="form-error-msg" id="complaintWardError"></span>
+              </div>
+
+              <div class="form-group">
+                <label for="complaintLocation">Specific Location / Landmark <span class="req">*</span></label>
+                <input type="text" id="complaintLocation" class="form-control" placeholder="e.g. Near Pole #14, Opposite Old Banyan Tree" required>
+                <span class="form-error-msg" id="complaintLocationError"></span>
+              </div>
+
+            </div>
+
+            <!-- Detailed Description -->
+            <div class="form-group">
+              <label for="complaintDescription">Detailed Problem Description <span class="req">*</span></label>
+              <textarea id="complaintDescription" rows="4" class="form-control" placeholder="Explain the problem in detail. How long has it existed? How many households are affected?" required></textarea>
+              <span class="form-error-msg" id="complaintDescriptionError"></span>
+              <span class="form-hint">Detailed descriptions help Panchayat staff bring the right replacement tools and parts.</span>
+            </div>
+
+            <!-- SECTION 3: IMAGE UPLOAD (FILEREADER API) -->
+            <div class="form-section-title" style="margin-top: 2rem;">
+              3. Photographic Evidence (FileReader API)
+            </div>
+
+            <div class="form-group">
+              <label>Attach Problem Photograph (Optional but strongly recommended)</label>
+              
+              <!-- Hidden native file input -->
+              <input type="file" id="complaintPhoto" accept="image/jpeg, image/jpg, image/png, image/webp" style="display: none;">
+
+              <!-- Clickable Drag & Drop Zone -->
+              <div class="upload-dropzone" id="uploadDropzone">
+                <div class="upload-icon">📷</div>
+                <div class="upload-prompt">Click to browse or drag & drop a photo here</div>
+                <div class="upload-sub">Supports JPG, JPEG, and PNG (Max 3 MB)</div>
+              </div>
+
+              <!-- Live Image Preview Card -->
+              <div class="file-preview-card" id="filePreviewCard" style="display: none;">
+                <img id="previewThumb" src="" alt="Selected Preview" class="file-preview-img">
+                <div class="file-preview-info">
+                  <div class="file-preview-name" id="previewFilename">photo.jpg</div>
+                  <div class="file-preview-size" id="previewFilesize">124 KB</div>
+                  <div class="file-preview-status">✓ Photo converted to Base64 data URL & ready for submission</div>
+                </div>
+                <button type="button" class="btn-remove-file" id="btnRemovePhoto">✕ Remove Photo</button>
+              </div>
+
+              <span class="form-hint" style="margin-top: 0.5rem;">
+                ℹ️ <strong>How it works:</strong> The browser's <code>FileReader API</code> reads your file, compresses it on a canvas, and saves it directly into the complaint record inside browser <code>localStorage</code>. The Panchayat administrator will view this exact photograph on their dashboard!
+              </span>
+            </div>
+
+            <!-- Submit Actions -->
+            <div style="margin-top: 2.2rem; padding-top: 1.25rem; border-top: 1px solid var(--border-soil); display: flex; justify-content: flex-end; gap: 0.85rem; align-items: center;">
+              <a href="citizen.html" class="btn btn-outline">Cancel</a>
+              <button type="submit" class="btn btn-primary btn-lg" id="btnSubmitGrievance">
+                🚀 Register Grievance & Generate Ticket
+              </button>
+            </div>
+
+          </form>
+
+        </div>
+
+      </div>
+
+    </div>
+  </main>
+
+  <!-- SUCCESS MODAL: Shows generated Complaint ID and quick tracking links -->
+  <div class="modal-backdrop" id="submissionSuccessModal">
+    <div class="modal-box" style="text-align: center; max-width: 520px;">
+      
+      <div style="width: 60px; height: 60px; border-radius: 50%; background: var(--success-bg); color: var(--success-color); display: flex; align-items: center; justify-content: center; font-size: 2rem; margin: 0 auto 1rem; border: 2px solid #A7F3D0;">
+        ✓
+      </div>
+
+      <h3 style="font-size: 1.45rem; color: var(--primary-900); margin-bottom: 0.35rem;">
+        Complaint Submitted Successfully!
+      </h3>
+      <p style="font-size: 0.88rem; color: var(--text-muted); margin-bottom: 1.25rem;">
+        Your grievance has been registered on the Sundarpur Gram Panchayat official portal.
+      </p>
+
+      <div style="background: var(--cream-bg); border: 2px dashed var(--primary-500); border-radius: var(--radius-sm); padding: 1.1rem; margin-bottom: 1.5rem;">
+        <span style="font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text-muted); font-weight: 700; display: block; margin-bottom: 0.3rem;">
+          Official Tracking Ticket ID
+        </span>
+        <span id="successComplaintId" style="font-family: var(--serif); font-size: 1.85rem; font-weight: 700; color: var(--primary-700); letter-spacing: 0.03em;">
+          CMP-2026-0001
+        </span>
+        <span style="display: block; font-size: 0.76rem; color: var(--text-muted); margin-top: 0.35rem;">
+          Saved to localStorage • Accessible across all pages
+        </span>
+      </div>
+
+      <div style="display: flex; gap: 0.75rem; justify-content: center; flex-wrap: wrap;">
+        <a href="track.html" class="btn btn-primary" id="btnModalTrack">
+          🔍 Track This Complaint
+        </a>
+        <a href="citizen.html" class="btn btn-outline">
+          📊 Back to Dashboard
+        </a>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="site-footer">
+    <div class="wrap" style="text-align: center; font-size: 0.78rem; color: var(--text-muted);">
+      © 2026 Sundarpur Gram Panchayat • GramSetu Grievance Submission Portal
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="js/app.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/complaint.js"></script>
+  <script>
+    // Pre-select category if passed in URL query param
+    document.addEventListener('DOMContentLoaded', () => {
+      const urlParams = new URLSearchParams(window.location.search);
+      const cat = urlParams.get('category');
+      if (cat) {
+        const catSelect = document.getElementById('complaintCategory');
+        if (catSelect) catSelect.value = cat;
+      }
+    });
+  </script>
+</body>
+</html>

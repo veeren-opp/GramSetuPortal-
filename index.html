@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>GramSetu (ग्राम सेतु) — Master Application Gateway</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary: #15803d;
+      --primary-dark: #166534;
+      --admin-navy: #0f172a;
+      --admin-blue: #0284c7;
+      --bg: #f8fafc;
+      --card-bg: #ffffff;
+      --border: #e2e8f0;
+      --text: #0f172a;
+      --text-muted: #64748b;
+    }
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+    .topbar {
+      background: #020617;
+      color: #94a3b8;
+      font-size: 0.8125rem;
+      padding: 0.5rem 1.5rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 2px solid #22c55e;
+    }
+    .hero {
+      text-align: center;
+      padding: 3.5rem 1.5rem 2rem 1.5rem;
+      background: linear-gradient(180deg, #f0fdf4 0%, #f8fafc 100%);
+      border-bottom: 1px solid var(--border);
+    }
+    .badge-hub {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      background: #dcfce7;
+      color: #166534;
+      border: 1px solid #bbf7d0;
+      padding: 0.35rem 0.85rem;
+      border-radius: 9999px;
+      font-size: 0.8125rem;
+      font-weight: 700;
+      margin-bottom: 1rem;
+    }
+    h1 {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: 2.75rem;
+      font-weight: 800;
+      color: #0f172a;
+      line-height: 1.15;
+      margin-bottom: 0.75rem;
+    }
+    h1 span {
+      color: #15803d;
+    }
+    .hero-sub {
+      font-size: 1.15rem;
+      color: #475569;
+      max-width: 680px;
+      margin: 0 auto 1.5rem auto;
+      line-height: 1.6;
+    }
+    .container {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 2.5rem 1.5rem;
+      flex: 1;
+    }
+    .portals-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 2rem;
+      margin-bottom: 3rem;
+    }
+    .portal-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 2rem;
+      box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05), 0 4px 6px -2px rgba(0, 0, 0, 0.02);
+      transition: all 0.25s ease;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      overflow: hidden;
+    }
+    .portal-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+    }
+    .portal-card.citizen {
+      border-top: 5px solid var(--primary);
+    }
+    .portal-card.admin {
+      border-top: 5px solid var(--admin-blue);
+    }
+    .portal-icon {
+      width: 56px;
+      height: 56px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.8rem;
+      margin-bottom: 1.25rem;
+    }
+    .citizen .portal-icon {
+      background: #dcfce7;
+      color: #15803d;
+    }
+    .admin .portal-icon {
+      background: #e0f2fe;
+      color: #0284c7;
+    }
+    .portal-title {
+      font-size: 1.4rem;
+      font-weight: 800;
+      color: #0f172a;
+      margin-bottom: 0.5rem;
+    }
+    .portal-desc {
+      font-size: 0.925rem;
+      color: #64748b;
+      line-height: 1.55;
+      margin-bottom: 1.5rem;
+      flex: 1;
+    }
+    .feature-list {
+      list-style: none;
+      margin-bottom: 1.75rem;
+    }
+    .feature-list li {
+      font-size: 0.85rem;
+      color: #334155;
+      margin-bottom: 0.5rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      padding: 0.85rem 1.5rem;
+      font-size: 1rem;
+      font-weight: 700;
+      border-radius: 8px;
+      text-decoration: none;
+      transition: all 0.2s ease;
+      cursor: pointer;
+      border: none;
+    }
+    .btn-citizen {
+      background: var(--primary);
+      color: #ffffff;
+    }
+    .btn-citizen:hover {
+      background: var(--primary-dark);
+      box-shadow: 0 4px 12px rgba(21, 128, 61, 0.35);
+    }
+    .btn-admin {
+      background: var(--admin-navy);
+      color: #ffffff;
+    }
+    .btn-admin:hover {
+      background: #1e293b;
+      box-shadow: 0 4px 12px rgba(15, 23, 42, 0.35);
+    }
+    .tech-specs {
+      background: #ffffff;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 1.75rem;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+    }
+    .tech-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 1.25rem;
+      margin-top: 1rem;
+    }
+    .tech-item {
+      padding: 1rem;
+      background: #f8fafc;
+      border-radius: 8px;
+      border: 1px solid #f1f5f9;
+    }
+    .tech-item h4 {
+      font-size: 0.85rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: #64748b;
+      margin-bottom: 0.35rem;
+    }
+    .tech-item p {
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: #0f172a;
+    }
+    footer {
+      background: #0f172a;
+      color: #94a3b8;
+      text-align: center;
+      padding: 2rem 1rem;
+      font-size: 0.85rem;
+      margin-top: auto;
+    }
+    footer a {
+      color: #38bdf8;
+      text-decoration: none;
+    }
+    footer a:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Top Strip -->
+  <div class="topbar">
+    <div>🇮🇳 Digital India • Ministry of Panchayati Raj • Smart Village Governance</div>
+    <div>Master Portal Gateway</div>
+  </div>
+
+  <!-- Hero -->
+  <section class="hero">
+    <div class="badge-hub">
+      <span>🚀 Full-Stack Production System Ready</span>
+    </div>
+    <h1>Gram<span>Setu</span> (ग्राम सेतु)</h1>
+    <p class="hero-sub">
+      A digital grievance-redressal ecosystem connecting rural citizens with regional Gram Panchayat administrations. Powered by Node.js, Express, MongoDB Cloud, and Cloudinary Image Storage.
+    </p>
+  </section>
+
+  <!-- Main Gateway Container -->
+  <div class="container">
+    
+    <div class="portals-grid">
+      
+      <!-- Citizen Portal Card -->
+      <div class="portal-card citizen">
+        <div class="portal-icon">🧑‍🌾</div>
+        <h2 class="portal-title">Citizen Grievance Portal</h2>
+        <p class="portal-desc">
+          Empowering village residents to file complaints with live mobile camera photographic proof, receive unique tracking IDs, and monitor redressal progress in real time.
+        </p>
+
+        <ul class="feature-list">
+          <li>✅ Mobile OTP Registration & Dynamic GP Selection</li>
+          <li>📸 Direct Camera & Photo Upload to Cloudinary</li>
+          <li>📊 Personal Citizen Dashboard & Grievance History</li>
+          <li>🔍 Live 4-Stage Visual Redressal Audit Timeline</li>
+        </ul>
+
+        <a href="citizen/index.html" class="btn btn-citizen">
+          Enter Citizen Portal →
+        </a>
+
+        <div style="margin-top: 1rem; font-size: 0.75rem; color: #64748b; text-align: center;">
+          Demo: <strong>Rajesh Kumar</strong> (9876543210 / password123)
+        </div>
+      </div>
+
+      <!-- Regional Admin Portal Card -->
+      <div class="portal-card admin">
+        <div class="portal-icon">🏛️</div>
+        <h2 class="portal-title">Regional Admin Console</h2>
+        <p class="portal-desc">
+          Official grievance action desk for Panchayat Development Officers (PDO) and Block Development Officers (BDO) with strict regional database partitioning.
+        </p>
+
+        <ul class="feature-list">
+          <li>🔒 Strict Regional Database Isolation ({ region: GP_ID })</li>
+          <li>📸 High-Resolution Photographic Lightbox Inspector</li>
+          <li>✍️ Official Status Transitions & Administrative Remarks</li>
+          <li>📈 Live KPI Metrics & Ward-Level Complaint Filtering</li>
+        </ul>
+
+        <a href="admin/index.html" class="btn btn-admin">
+          Enter Admin Console →
+        </a>
+
+        <div style="margin-top: 1rem; font-size: 0.75rem; color: #64748b; text-align: center;">
+          Demo: <strong>Ramesh Verma, PDO</strong> (9999000001 / admin123)
+        </div>
+      </div>
+
+    </div>
+
+    <!-- System Architecture & Tech Specs -->
+    <div class="tech-specs">
+      <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.75rem;">
+        <h3 style="font-size: 1.15rem; color: #0f172a;">Engineering & Deployment Specifications</h3>
+        <div style="display: flex; gap: 0.75rem;">
+          <a href="README.md" style="font-size: 0.8125rem; font-weight: 700; color: #0284c7; text-decoration: underline;">Read Full README.md ↗</a>
+          <a href="DEPLOYMENT.md" style="font-size: 0.8125rem; font-weight: 700; color: #16a34a; text-decoration: underline;">Free Deployment Guide ↗</a>
+        </div>
+      </div>
+
+      <div class="tech-grid">
+        <div class="tech-item">
+          <h4>Cloud Database</h4>
+          <p>MongoDB Atlas (Mongoose)</p>
+          <span style="font-size: 0.75rem; color: #64748b;">No localStorage database</span>
+        </div>
+        <div class="tech-item">
+          <h4>Photo Evidence</h4>
+          <p>Cloudinary Cloud CDN</p>
+          <span style="font-size: 0.75rem; color: #64748b;">No Base64 strings</span>
+        </div>
+        <div class="tech-item">
+          <h4>Backend API</h4>
+          <p>Node.js & Express REST</p>
+          <span style="font-size: 0.75rem; color: #64748b;">JWT + Bcrypt + Helmet</span>
+        </div>
+        <div class="tech-item">
+          <h4>Security Boundary</h4>
+          <p>Regional Isolation</p>
+          <span style="font-size: 0.75rem; color: #64748b;">Partitioned queries</span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Footer -->
+  <footer>
+    <div style="margin-bottom: 0.5rem; font-weight: 700; color: #f1f5f9;">
+      GramSetu (ग्राम सेतु) — Production Civic Grievance Management Platform
+    </div>
+    <div>
+      Designed for Academic Evaluation, Viva Examination & Digital Smart Village Implementation.
+    </div>
+  </footer>
+
+</body>
+</html>

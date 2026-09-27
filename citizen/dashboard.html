@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Citizen Dashboard — GramSetu</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+
+  <!-- Topbar -->
+  <div class="gov-topbar">
+    <div class="container">
+      <div>🇮🇳 Digital Gram Panchayat Platform • Citizen Redressal Console</div>
+      <div id="topbar-region">Loading jurisdiction...</div>
+    </div>
+  </div>
+
+  <!-- Navbar -->
+  <nav class="navbar">
+    <div class="container nav-container">
+      <a href="index.html" class="brand">
+        <div class="brand-emblem">🏛️</div>
+        <div>
+          <div class="brand-title">Gram<span>Setu</span></div>
+          <div class="brand-subtitle">Citizen Dashboard</div>
+        </div>
+      </a>
+      <ul class="nav-menu" id="nav-menu">
+        <!-- Injected via auth.js -->
+      </ul>
+    </div>
+  </nav>
+
+  <!-- Main Container -->
+  <main style="padding: 2.5rem 0; flex: 1;">
+    <div class="container">
+      
+      <!-- Greeting & Primary Action Buttons -->
+      <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; margin-bottom: 2rem;">
+        <div>
+          <h1 style="font-size: 1.85rem;">Welcome back, <span id="citizen-name" style="color: var(--primary);">Citizen</span></h1>
+          <p style="color: var(--text-muted); font-size: 0.9375rem; margin-top: 0.25rem;">
+            Gram Panchayat: <strong id="citizen-region" style="color: #1e293b;">-</strong> | Ward: <strong id="citizen-ward" style="color: #1e293b;">-</strong>
+          </p>
+        </div>
+
+        <div style="display: flex; gap: 0.75rem; flex-wrap: wrap;">
+          <a href="submit-complaint.html" class="btn btn-primary btn-lg">
+            <span>📷</span> Report a Problem
+          </a>
+          <a href="complaints.html" class="btn btn-secondary btn-lg">
+            <span>📋</span> My Complaints
+          </a>
+          <a href="profile.html" class="btn btn-secondary btn-lg">
+            <span>👤</span> Profile
+          </a>
+          <button onclick="CitizenAuth.logout()" class="btn btn-secondary btn-lg" style="color: #b91c1c; border-color: #fca5a5;">
+            Logout 🚪
+          </button>
+        </div>
+      </div>
+
+      <!-- Real Database Statistics Grid -->
+      <h3 style="font-size: 1.15rem; color: #334155; margin-bottom: 1rem;">Grievance Status Overview</h3>
+      <div class="kpi-grid">
+        <div class="kpi-card">
+          <div class="kpi-icon" style="background: #f1f5f9; color: #475569;">📊</div>
+          <div>
+            <div class="kpi-val" id="kpi-total">0</div>
+            <div class="kpi-lbl">Total Complaints</div>
+          </div>
+        </div>
+
+        <div class="kpi-card">
+          <div class="kpi-icon" style="background: var(--status-submitted-bg); color: var(--status-submitted);">📥</div>
+          <div>
+            <div class="kpi-val" id="kpi-submitted" style="color: var(--status-submitted);">0</div>
+            <div class="kpi-lbl">Submitted</div>
+          </div>
+        </div>
+
+        <div class="kpi-card">
+          <div class="kpi-icon" style="background: var(--status-review-bg); color: var(--status-review);">🔍</div>
+          <div>
+            <div class="kpi-val" id="kpi-review" style="color: var(--status-review);">0</div>
+            <div class="kpi-lbl">Under Review</div>
+          </div>
+        </div>
+
+        <div class="kpi-card">
+          <div class="kpi-icon" style="background: var(--status-progress-bg); color: var(--status-progress);">⚙️</div>
+          <div>
+            <div class="kpi-val" id="kpi-progress" style="color: var(--status-progress);">0</div>
+            <div class="kpi-lbl">In Progress</div>
+          </div>
+        </div>
+
+        <div class="kpi-card">
+          <div class="kpi-icon" style="background: var(--status-resolved-bg); color: var(--status-resolved);">✅</div>
+          <div>
+            <div class="kpi-val" id="kpi-resolved" style="color: var(--status-resolved);">0</div>
+            <div class="kpi-lbl">Resolved</div>
+          </div>
+        </div>
+
+        <div class="kpi-card">
+          <div class="kpi-icon" style="background: var(--status-rejected-bg); color: var(--status-rejected);">✕</div>
+          <div>
+            <div class="kpi-val" id="kpi-rejected" style="color: var(--status-rejected);">0</div>
+            <div class="kpi-lbl">Rejected</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Recent Complaints Card -->
+      <div class="card" style="margin-top: 1.5rem;">
+        <div class="card-header">
+          <div>
+            <h3 style="font-size: 1.25rem;">Recent Complaints</h3>
+            <p style="font-size: 0.8125rem; color: var(--text-muted); margin-top: 0.15rem;">Your latest reported civic problems and their current verification status.</p>
+          </div>
+          <a href="complaints.html" class="btn btn-secondary btn-sm">View All Complaints →</a>
+        </div>
+
+        <div class="table-responsive">
+          <table>
+            <thead>
+              <tr>
+                <th>Photo</th>
+                <th>Complaint ID</th>
+                <th>Category & Title</th>
+                <th>Location</th>
+                <th>Date</th>
+                <th>Status</th>
+                <th style="text-align: right;">Action</th>
+              </tr>
+            </thead>
+            <tbody id="recent-tbody">
+              <tr>
+                <td colspan="7" style="text-align: center; padding: 2.5rem; color: var(--text-muted);">
+                  Loading recent grievances from database...
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+    </div>
+  </main>
+
+  <script src="js/config.js"></script>
+  <script src="js/api.js"></script>
+  <script src="js/auth.js"></script>
+  <script>
+    if (!CitizenAuth.requireAuth()) {
+      throw new Error('Unauthorized');
+    }
+
+    const user = CitizenAuth.getUser();
+    document.getElementById('citizen-name').textContent = user.name;
+    const regionName = user.region ? (user.region.name || user.region) : 'Assigned GP';
+    const wardName = user.ward ? (user.ward.name || `Ward ${user.ward.wardNumber || ''}`) : 'General';
+    document.getElementById('citizen-region').textContent = regionName;
+    document.getElementById('citizen-ward').textContent = wardName;
+    document.getElementById('topbar-region').textContent = `Jurisdiction: ${regionName}`;
+
+    const getBadgeClass = (status) => {
+      switch (status) {
+        case 'Submitted': return 'badge-submitted';
+        case 'Under Review': return 'badge-under-review';
+        case 'In Progress': return 'badge-in-progress';
+        case 'Resolved': return 'badge-resolved';
+        case 'Rejected': return 'badge-rejected';
+        default: return 'badge-submitted';
+      }
+    };
+
+    async function loadDashboard() {
+      try {
+        const res = await GramSetuAPI.get('/citizen/dashboard');
+        if (res.success) {
+          // Update KPIs
+          document.getElementById('kpi-total').textContent = res.stats.total;
+          document.getElementById('kpi-submitted').textContent = res.stats.submitted;
+          document.getElementById('kpi-review').textContent = res.stats.underReview;
+          document.getElementById('kpi-progress').textContent = res.stats.inProgress;
+          document.getElementById('kpi-resolved').textContent = res.stats.resolved;
+          document.getElementById('kpi-rejected').textContent = res.stats.rejected;
+
+          // Render Recent
+          const tbody = document.getElementById('recent-tbody');
+          const recents = res.recentComplaints || [];
+
+          if (recents.length === 0) {
+            tbody.innerHTML = `
+              <tr>
+                <td colspan="7" style="text-align: center; padding: 3rem; color: var(--text-muted);">
+                  <div style="font-size: 2rem; margin-bottom: 0.5rem;">📭</div>
+                  <div>You have not submitted any civic complaints yet.</div>
+                  <div style="margin-top: 0.5rem;"><a href="submit-complaint.html" class="btn btn-primary btn-sm">Report Your First Problem</a></div>
+                </td>
+              </tr>
+            `;
+            return;
+          }
+
+          tbody.innerHTML = recents.map(c => {
+            const dateStr = new Date(c.createdAt).toLocaleDateString('en-IN', {
+              day: 'numeric',
+              month: 'short',
+              year: 'numeric'
+            });
+
+            return `
+              <tr>
+                <td>
+                  <img src="${c.imageUrl}" class="thumb-preview" alt="Evidence" onerror="this.src='https://via.placeholder.com/60?text=Photo'">
+                </td>
+                <td>
+                  <strong style="color: var(--primary); font-family: monospace;">${c.complaintId}</strong>
+                </td>
+                <td>
+                  <div style="font-weight: 600; color: #1e293b; max-width: 260px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${c.title}</div>
+                  <span style="font-size: 0.75rem; color: #64748b;">${c.category}</span>
+                </td>
+                <td>
+                  <div style="font-size: 0.8125rem; color: #374151;">${c.location}</div>
+                </td>
+                <td style="font-size: 0.8125rem; color: #64748b;">${dateStr}</td>
+                <td><span class="badge ${getBadgeClass(c.status)}">${c.status}</span></td>
+                <td style="text-align: right;">
+                  <a href="complaint-details.html?id=${c.complaintId}" class="btn btn-secondary btn-sm">
+                    View Details →
+                  </a>
+                </td>
+              </tr>
+            `;
+          }).join('');
+        }
+      } catch (err) {
+        showToast(err.message || 'Failed to load dashboard data.', 'error');
+      }
+    }
+
+    loadDashboard();
+  </script>
+</body>
+</html>

@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Regional Complaints Triage — GramSetu Admin</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+
+  <!-- Topbar -->
+  <div class="admin-topbar">
+    <div>🇮🇳 Government of India • Panchayati Raj Administration • Regional Complaints Management</div>
+    <div>Jurisdiction Enforcement: <strong style="color: #38bdf8;">Strict Regional Isolation Active</strong></div>
+  </div>
+
+  <!-- Header -->
+  <header class="admin-header">
+    <div class="admin-brand">
+      <div class="admin-logo">🏛️</div>
+      <div>
+        <div class="admin-title">Gram<span>Setu</span> Regional Console</div>
+        <div class="admin-subtitle">Block Grievance Redressal Management</div>
+      </div>
+    </div>
+
+    <!-- Active Jurisdiction -->
+    <div class="region-jurisdiction-badge" id="header-jurisdiction-badge">
+      📍 Loading jurisdiction...
+    </div>
+
+    <!-- Nav & Admin Profile -->
+    <div style="display: flex; align-items: center; gap: 1.5rem;">
+      <ul class="admin-nav">
+        <li><a href="dashboard.html" class="admin-nav-link">Dashboard</a></li>
+        <li><a href="complaints.html" class="admin-nav-link active">Complaints</a></li>
+        <li><a href="profile.html" class="admin-nav-link">Profile</a></li>
+      </ul>
+
+      <div style="text-align: right; font-size: 0.85rem;">
+        <div style="font-weight: 700; color: var(--admin-navy);" id="header-admin-name">Officer Name</div>
+        <div style="font-size: 0.75rem; color: #64748b;" id="header-admin-desig">Regional Administrator</div>
+      </div>
+
+      <button onclick="AdminAuth.logout()" class="btn btn-secondary btn-sm" style="color: #b91c1c; border-color: #fca5a5;">
+        Sign Out 🚪
+      </button>
+    </div>
+  </header>
+
+  <!-- Main Container -->
+  <main class="admin-container">
+    
+    <!-- Title and Toolbar -->
+    <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; margin-bottom: 1.25rem;">
+      <div>
+        <h1 style="font-size: 1.6rem; color: var(--admin-navy);">Regional Complaints Triage</h1>
+        <p style="font-size: 0.8125rem; color: #64748b;">
+          Review citizen reports, inspect site evidence, dispatch linemen, and publish official remarks.
+        </p>
+      </div>
+      <div style="font-size: 0.875rem; color: #64748b; font-weight: 600;">
+        Total: <span id="total-count-badge" style="color: var(--admin-navy);">0</span> records
+      </div>
+    </div>
+
+    <!-- Filter Toolbar -->
+    <div class="toolbar">
+      <div class="filter-group">
+        <input type="text" id="search-input" class="form-input" placeholder="Search by ID, citizen, locality..." style="width: 260px;" oninput="onFilterChange()">
+        
+        <select id="status-filter" class="form-select" onchange="onFilterChange()">
+          <option value="ALL">All Statuses</option>
+          <option value="Submitted">Submitted (New)</option>
+          <option value="Under Review">Under Review</option>
+          <option value="In Progress">In Progress</option>
+          <option value="Resolved">Resolved</option>
+          <option value="Rejected">Rejected</option>
+        </select>
+
+        <select id="category-filter" class="form-select" onchange="onFilterChange()">
+          <option value="ALL">All Categories</option>
+          <option value="Roads">Roads</option>
+          <option value="Street Lights">Street Lights</option>
+          <option value="Water Supply">Water Supply</option>
+          <option value="Sanitation">Sanitation</option>
+          <option value="Drainage">Drainage</option>
+          <option value="Waste Management">Waste Management</option>
+          <option value="Electricity">Electricity</option>
+          <option value="Public Infrastructure">Public Infrastructure</option>
+          <option value="Other">Other</option>
+        </select>
+      </div>
+
+      <button class="btn btn-secondary btn-sm" onclick="loadComplaints()">
+        🔄 Refresh Table
+      </button>
+    </div>
+
+    <!-- Data Table Card -->
+    <div class="data-table-container">
+      <table class="admin-table">
+        <thead>
+          <tr>
+            <th>Evidence</th>
+            <th>Complaint ID</th>
+            <th>Citizen Complainant</th>
+            <th>Issue & Category</th>
+            <th>Ward & Landmark</th>
+            <th>Filed Date</th>
+            <th>Status</th>
+            <th style="text-align: right;">Action</th>
+          </tr>
+        </thead>
+        <tbody id="complaints-tbody">
+          <tr>
+            <td colspan="8" style="text-align: center; padding: 2.5rem; color: #64748b;">
+              Loading regional complaints from database...
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+  </main>
+
+  <script src="js/config.js"></script>
+  <script src="js/api.js"></script>
+  <script src="js/auth.js"></script>
+  <script>
+    if (!AdminAuth.requireAuth()) {
+      throw new Error('Unauthorized');
+    }
+
+    const getBadgeClass = (status) => {
+      switch (status) {
+        case 'Submitted': return 'badge-submitted';
+        case 'Under Review': return 'badge-under-review';
+        case 'In Progress': return 'badge-in-progress';
+        case 'Resolved': return 'badge-resolved';
+        case 'Rejected': return 'badge-rejected';
+        default: return 'badge-submitted';
+      }
+    };
+
+    let timer = null;
+    function onFilterChange() {
+      clearTimeout(timer);
+      timer = setTimeout(loadComplaints, 300);
+    }
+
+    async function loadComplaints() {
+      const tbody = document.getElementById('complaints-tbody');
+      const search = document.getElementById('search-input').value.trim();
+      const status = document.getElementById('status-filter').value;
+      const category = document.getElementById('category-filter').value;
+
+      const params = new URLSearchParams();
+      if (search) params.append('search', search);
+      if (status !== 'ALL') params.append('status', status);
+      if (category !== 'ALL') params.append('category', category);
+
+      try {
+        const res = await AdminAPI.get(`/admin/complaints?${params.toString()}`);
+        if (res.success) {
+          const complaints = res.complaints || [];
+          document.getElementById('total-count-badge').textContent = res.pagination ? res.pagination.total : complaints.length;
+
+          if (complaints.length === 0) {
+            tbody.innerHTML = `
+              <tr>
+                <td colspan="8" style="text-align: center; padding: 3rem; color: #64748b;">
+                  <div style="font-size: 2rem; margin-bottom: 0.5rem;">📭</div>
+                  <div>No complaints found matching criteria in your Gram Panchayat.</div>
+                </td>
+              </tr>
+            `;
+            return;
+          }
+
+          tbody.innerHTML = complaints.map(c => {
+            const dateStr = new Date(c.createdAt).toLocaleDateString('en-IN', {
+              day: 'numeric',
+              month: 'short',
+              year: 'numeric'
+            });
+
+            return `
+              <tr>
+                <td>
+                  <a href="complaint-details.html?id=${c.complaintId}">
+                    <img src="${c.imageUrl}" class="evidence-thumb" alt="Evidence" onerror="this.src='https://via.placeholder.com/50?text=Photo'">
+                  </a>
+                </td>
+                <td>
+                  <a href="complaint-details.html?id=${c.complaintId}" style="color: var(--admin-navy); font-weight: 700; font-family: monospace;">
+                    ${c.complaintId}
+                  </a>
+                </td>
+                <td>
+                  <div style="font-weight: 700; color: #0f172a;">${c.citizenName}</div>
+                  <div style="font-size: 0.75rem; color: #64748b;">📞 +91 ${c.citizenMobile}</div>
+                </td>
+                <td>
+                  <div style="font-weight: 600; color: #1e293b; max-width: 240px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${c.title}</div>
+                  <span style="font-size: 0.75rem; color: #0284c7; font-weight: 600;">${c.category}</span>
+                </td>
+                <td>
+                  <div>${c.ward ? (c.ward.name || `Ward ${c.ward.wardNumber}`) : 'General'}</div>
+                  <div style="font-size: 0.75rem; color: #64748b; max-width: 180px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${c.location}</div>
+                </td>
+                <td style="font-size: 0.8125rem; color: #64748b;">${dateStr}</td>
+                <td><span class="badge ${getBadgeClass(c.status)}">${c.status}</span></td>
+                <td style="text-align: right;">
+                  <a href="complaint-details.html?id=${c.complaintId}" class="btn btn-secondary btn-sm" style="font-weight: 600;">
+                    Triage & Review →
+                  </a>
+                </td>
+              </tr>
+            `;
+          }).join('');
+        }
+      } catch (err) {
+        tbody.innerHTML = `
+          <tr>
+            <td colspan="8" style="text-align: center; padding: 2.5rem; color: #dc2626;">
+              Error loading complaints: ${err.message}.
+            </td>
+          </tr>
+        `;
+      }
+    }
+
+    loadComplaints();
+  </script>
+</body>
+</html>

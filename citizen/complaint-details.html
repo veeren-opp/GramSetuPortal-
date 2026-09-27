@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Grievance Details — GramSetu</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+
+  <!-- Topbar -->
+  <div class="gov-topbar">
+    <div class="container">
+      <div>🇮🇳 Digital Gram Panchayat Platform • Grievance Detail Record</div>
+      <div>Helpline: <strong>1800-180-1551</strong></div>
+    </div>
+  </div>
+
+  <!-- Navbar -->
+  <nav class="navbar">
+    <div class="container nav-container">
+      <a href="index.html" class="brand">
+        <div class="brand-emblem">🏛️</div>
+        <div>
+          <div class="brand-title">Gram<span>Setu</span></div>
+          <div class="brand-subtitle">Grievance Details</div>
+        </div>
+      </a>
+      <ul class="nav-menu" id="nav-menu">
+        <!-- Injected via auth.js -->
+      </ul>
+    </div>
+  </nav>
+
+  <!-- Main Container -->
+  <main style="padding: 2.5rem 0; flex: 1;">
+    <div class="container container-narrow">
+      
+      <div style="margin-bottom: 1.25rem;">
+        <a href="complaints.html" style="font-size: 0.875rem; font-weight: 600; color: var(--primary);">
+          ← Back to My Complaints
+        </a>
+      </div>
+
+      <div id="loading-state" class="card" style="text-align: center; padding: 3rem;">
+        <div style="font-size: 2rem; margin-bottom: 0.5rem;">⏳</div>
+        <div>Loading grievance record from database...</div>
+      </div>
+
+      <div id="details-card" class="card" style="display: none;">
+        
+        <!-- Header -->
+        <div class="card-header" style="flex-wrap: wrap; gap: 0.75rem;">
+          <div>
+            <span class="badge" id="c-status-badge">Status</span>
+            <h1 id="c-id" style="font-size: 1.5rem; font-family: monospace; font-weight: 800; color: var(--primary); margin-top: 0.35rem;">
+              CMP-2026-XXXXXX
+            </h1>
+          </div>
+          <div style="text-align: right; font-size: 0.8125rem; color: var(--text-muted);">
+            <div>Filed on: <strong id="c-date" style="color: var(--text-main);">-</strong></div>
+            <div style="margin-top: 0.2rem;">Last Updated: <strong id="c-updated" style="color: var(--text-main);">-</strong></div>
+          </div>
+        </div>
+
+        <!-- Cloudinary Photographic Evidence Image -->
+        <div style="border-radius: var(--radius-md); overflow: hidden; background: #0f172a; text-align: center; margin-bottom: 1.5rem; max-height: 380px;">
+          <img id="c-image" src="" alt="Photographic Evidence" style="max-height: 380px; max-width: 100%; object-fit: contain; cursor: pointer;" onclick="openLightbox(this.src)" title="Click to view full photo in lightbox">
+          <div style="background: rgba(0,0,0,0.85); color: #cbd5e1; font-size: 0.75rem; padding: 0.35rem; display: flex; justify-content: space-between; align-items: center; padding: 0.4rem 1rem;">
+            <span>📸 Verified On-Site Photographic Evidence (Cloudinary CDN)</span>
+            <a id="c-image-link" href="#" target="_blank" style="color: #38bdf8; text-decoration: underline;">Open Original ↗</a>
+          </div>
+        </div>
+
+        <!-- Issue Title & Description -->
+        <h2 id="c-title" style="font-size: 1.35rem; margin-bottom: 0.5rem;">Complaint Title</h2>
+        <p id="c-desc" style="font-size: 0.95rem; color: #374151; line-height: 1.6; margin-bottom: 1.5rem; white-space: pre-wrap;"></p>
+
+        <!-- Location & Category Metadata Grid -->
+        <div style="background: #f8fafc; border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 1.25rem; margin-bottom: 1.5rem; display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; font-size: 0.875rem;">
+          <div>
+            <span style="color: var(--text-muted); font-size: 0.75rem; text-transform: uppercase; display: block;">Civic Category</span>
+            <strong id="c-category" style="color: var(--primary);">-</strong>
+          </div>
+          <div>
+            <span style="color: var(--text-muted); font-size: 0.75rem; text-transform: uppercase; display: block;">Exact Landmark / Location</span>
+            <strong id="c-location">-</strong>
+          </div>
+          <div>
+            <span style="color: var(--text-muted); font-size: 0.75rem; text-transform: uppercase; display: block;">Gram Panchayat / Region</span>
+            <strong id="c-region">-</strong>
+          </div>
+          <div>
+            <span style="color: var(--text-muted); font-size: 0.75rem; text-transform: uppercase; display: block;">Ward / Local Area</span>
+            <strong id="c-ward">-</strong>
+          </div>
+        </div>
+
+        <!-- Official Administrative Remarks Box -->
+        <div id="c-remark-card" style="display: none; background: #fefce8; border-left: 4px solid var(--accent); padding: 1rem 1.25rem; border-radius: var(--radius-sm); margin-bottom: 1.5rem;">
+          <div style="font-weight: 700; color: #854d0e; font-size: 0.85rem; margin-bottom: 0.35rem;">
+            🏛️ Official Administrative Remark from Panchayat Officer:
+          </div>
+          <p id="c-remark-text" style="color: #713f12; font-size: 0.9375rem; margin: 0; line-height: 1.5;"></p>
+          <div id="c-officer-row" style="margin-top: 0.5rem; font-size: 0.8125rem; color: #a16207; font-weight: 600;">
+            Assigned Field Officer: <span id="c-officer">-</span>
+          </div>
+        </div>
+
+        <!-- Vertical Timeline Audit -->
+        <div>
+          <h3 style="font-size: 0.95rem; text-transform: uppercase; color: #475569; letter-spacing: 0.05em; margin-bottom: 0.75rem;">
+            Redressal Progress Audit
+          </h3>
+          <div class="timeline" id="c-timeline">
+            <!-- Injected dynamically -->
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+  </main>
+
+  <!-- Photo Lightbox Modal -->
+  <div style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(15, 23, 42, 0.85); backdrop-filter: blur(4px); z-index: 1000; align-items: center; justify-content: center; padding: 1rem;" id="lightbox-modal" onclick="closeLightbox()">
+    <div style="position: relative; max-width: 90vw; max-height: 90vh; text-align: center;">
+      <button class="btn btn-secondary btn-sm" style="position: absolute; top: -2.5rem; right: 0; background: #fff;" onclick="closeLightbox()">✕ Close</button>
+      <img id="lightbox-image" src="" alt="Full Photographic Evidence" style="max-width: 90vw; max-height: 85vh; object-fit: contain; border-radius: var(--radius-md);">
+    </div>
+  </div>
+
+  <script src="js/config.js"></script>
+  <script src="js/api.js"></script>
+  <script src="js/auth.js"></script>
+  <script>
+    if (!CitizenAuth.requireAuth()) {
+      throw new Error('Unauthorized');
+    }
+
+    const urlParams = new URLSearchParams(window.location.search);
+    const complaintId = urlParams.get('id');
+
+    if (!complaintId) {
+      window.location.href = 'complaints.html';
+    }
+
+    const getBadgeClass = (status) => {
+      switch (status) {
+        case 'Submitted': return 'badge-submitted';
+        case 'Under Review': return 'badge-under-review';
+        case 'In Progress': return 'badge-in-progress';
+        case 'Resolved': return 'badge-resolved';
+        case 'Rejected': return 'badge-rejected';
+        default: return 'badge-submitted';
+      }
+    };
+
+    async function loadComplaintDetails() {
+      try {
+        const res = await GramSetuAPI.get(`/complaints/${complaintId}`);
+        if (res.success) {
+          const c = res.complaint;
+
+          document.getElementById('c-id').textContent = c.complaintId;
+          const badge = document.getElementById('c-status-badge');
+          badge.textContent = c.status;
+          badge.className = `badge ${getBadgeClass(c.status)}`;
+
+          document.getElementById('c-date').textContent = new Date(c.createdAt).toLocaleDateString('en-IN', {
+            day: 'numeric',
+            month: 'short',
+            year: 'numeric',
+            hour: '2-digit',
+            minute: '2-digit'
+          });
+
+          document.getElementById('c-updated').textContent = new Date(c.updatedAt).toLocaleDateString('en-IN', {
+            day: 'numeric',
+            month: 'short',
+            year: 'numeric',
+            hour: '2-digit',
+            minute: '2-digit'
+          });
+
+          const img = document.getElementById('c-image');
+          img.src = c.imageUrl;
+          document.getElementById('c-image-link').href = c.imageUrl;
+
+          document.getElementById('c-title').textContent = c.title;
+          document.getElementById('c-desc').textContent = c.description;
+          document.getElementById('c-category').textContent = c.category;
+          document.getElementById('c-location').textContent = c.location;
+          document.getElementById('c-region').textContent = c.region ? (c.region.name || c.region) : '-';
+          document.getElementById('c-ward').textContent = c.ward ? (c.ward.name || `Ward ${c.ward.wardNumber}`) : 'General';
+
+          // Remarks
+          const remCard = document.getElementById('c-remark-card');
+          if (c.adminRemark && c.adminRemark.trim()) {
+            remCard.style.display = 'block';
+            document.getElementById('c-remark-text').textContent = c.adminRemark;
+            if (c.assignedOfficer && c.assignedOfficer.trim()) {
+              document.getElementById('c-officer').textContent = c.assignedOfficer;
+              document.getElementById('c-officer-row').style.display = 'block';
+            } else {
+              document.getElementById('c-officer-row').style.display = 'none';
+            }
+          } else {
+            remCard.style.display = 'none';
+          }
+
+          // Timeline
+          const timelineEl = document.getElementById('c-timeline');
+          const history = (c.statusHistory && c.statusHistory.length > 0) ? c.statusHistory : [
+            { status: c.status, changedBy: 'Citizen', remarks: 'Grievance ticket created.', timestamp: c.createdAt }
+          ];
+
+          timelineEl.innerHTML = history.map(item => {
+            const timeStr = new Date(item.timestamp).toLocaleString('en-IN', {
+              day: 'numeric',
+              month: 'short',
+              year: 'numeric',
+              hour: '2-digit',
+              minute: '2-digit'
+            });
+
+            return `
+              <div class="timeline-item">
+                <div class="timeline-dot"></div>
+                <div class="timeline-content">
+                  <div style="font-size: 0.75rem; color: #64748b;">${timeStr}</div>
+                  <div style="font-weight: 700; font-size: 0.875rem; margin: 0.15rem 0;">${item.status} (${item.changedBy})</div>
+                  <div style="font-size: 0.8125rem; color: #374151;">${item.remarks || 'Status logged.'}</div>
+                </div>
+              </div>
+            `;
+          }).join('');
+
+          document.getElementById('loading-state').style.display = 'none';
+          document.getElementById('details-card').style.display = 'block';
+        }
+      } catch (err) {
+        document.getElementById('loading-state').innerHTML = `
+          <div style="color: #dc2626; font-size: 1.1rem; font-weight: 700;">Error Loading Grievance Record</div>
+          <div style="color: var(--text-muted); margin-top: 0.35rem;">${err.message || 'Record not found or access denied.'}</div>
+          <div style="margin-top: 1rem;"><a href="complaints.html" class="btn btn-secondary btn-sm">← Back to Complaints</a></div>
+        `;
+      }
+    }
+
+    function openLightbox(url) {
+      document.getElementById('lightbox-image').src = url;
+      document.getElementById('lightbox-modal').style.display = 'flex';
+    }
+
+    function closeLightbox() {
+      document.getElementById('lightbox-modal').style.display = 'none';
+    }
+
+    loadComplaintDetails();
+  </script>
+</body>
+</html>

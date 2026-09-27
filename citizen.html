@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Citizen Dashboard | GramSetu — Sundarpur Gram Panchayat</title>
+  <meta name="description" content="Citizen Dashboard for Sundarpur Gram Panchayat. File complaints, track active grievances, and read village notices.">
+  
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,500;0,600;0,700;1,500&family=Hind:wght@400;500;600;700&display=swap" rel="stylesheet">
+  
+  <!-- Stylesheet -->
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <!-- Top Government Strip -->
+  <div class="top-gov-strip">
+    <div class="wrap">
+      <div class="top-gov-info">
+        <span>🏛️ Department of Panchayati Raj • Government of Maharashtra</span>
+        <span class="panchayat-pill">Sundarpur Gram Panchayat Citizen Portal</span>
+      </div>
+      <div class="top-gov-right">
+        <span>Sundarpur Block: Ramnagar • Dist: Buldhana</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Header -->
+  <header class="site-header">
+    <div class="wrap">
+      <a href="index.html" class="brand">
+        <div class="brand-emblem">🌾</div>
+        <div class="brand-title">
+          <span class="brand-name">GramSetu <small>Citizen Action & Grievance Dashboard</small></span>
+        </div>
+      </a>
+
+      <!-- Desktop Nav -->
+      <nav class="site-nav">
+        <a href="citizen.html" class="active">📊 My Dashboard</a>
+        <a href="complaint.html">➕ File Complaint</a>
+        <a href="track.html">🔍 Track Ticket</a>
+        <a href="index.html">🏠 Home Portal</a>
+      </nav>
+
+      <!-- Auth actions -->
+      <div class="nav-right-actions">
+        <div id="headerAuthContainer"></div>
+        <button class="mobile-nav-toggle" aria-label="Toggle navigation">☰</button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main class="main-content" style="padding: 2rem 0 3.5rem;">
+    <div class="wrap">
+
+      <!-- Welcome Banner -->
+      <div style="background: var(--paper); border: 1px solid var(--border-soil); border-radius: var(--radius-md); padding: 1.5rem 1.8rem; margin-bottom: 2rem; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; border-left: 5px solid var(--primary-700); box-shadow: var(--shadow-sm);">
+        <div>
+          <span style="font-size: 0.8rem; font-weight: 700; color: var(--primary-700); text-transform: uppercase; letter-spacing: 0.05em;">Citizen Dashboard</span>
+          <h1 style="font-size: 1.85rem; color: var(--primary-900); margin: 0.2rem 0 0.3rem;">
+            Welcome, <span id="citizenGreetingName">Citizen</span>!
+          </h1>
+          <p style="font-size: 0.88rem; color: var(--text-muted); margin: 0;" id="citizenWardInfo">
+            Registered Resident of Sundarpur Gram Panchayat
+          </p>
+        </div>
+
+        <div style="display: flex; gap: 0.75rem; flex-wrap: wrap;">
+          <a href="complaint.html" class="btn btn-ochre">
+            ➕ File New Grievance
+          </a>
+          <a href="track.html" class="btn btn-outline">
+            🔍 Track a Ticket
+          </a>
+        </div>
+      </div>
+
+      <!-- Quick Action Cards Grid -->
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1rem; margin-bottom: 2rem;">
+        
+        <a href="complaint.html" class="card" style="text-decoration: none; color: inherit; border-top: 3px solid var(--accent-ochre);">
+          <div style="font-size: 1.8rem; margin-bottom: 0.4rem;">📝</div>
+          <h4 style="font-size: 1.05rem; margin-bottom: 0.2rem; color: var(--primary-900);">Submit Complaint</h4>
+          <p style="font-size: 0.8rem; color: var(--text-muted); margin: 0;">Upload photo & description of civic issue</p>
+        </a>
+
+        <a href="track.html" class="card" style="text-decoration: none; color: inherit; border-top: 3px solid var(--accent-blue);">
+          <div style="font-size: 1.8rem; margin-bottom: 0.4rem;">🔍</div>
+          <h4 style="font-size: 1.05rem; margin-bottom: 0.2rem; color: var(--primary-900);">Track Complaint</h4>
+          <p style="font-size: 0.8rem; color: var(--text-muted); margin: 0;">Check real-time progress by ticket ID</p>
+        </a>
+
+        <a href="javascript:void(0)" onclick="openModal('announcementsModal')" class="card" style="text-decoration: none; color: inherit; border-top: 3px solid #7C3AED;">
+          <div style="font-size: 1.8rem; margin-bottom: 0.4rem;">📢</div>
+          <h4 style="font-size: 1.05rem; margin-bottom: 0.2rem; color: var(--primary-900);">Announcements</h4>
+          <p style="font-size: 0.8rem; color: var(--text-muted); margin: 0;">View Gram Sabha notices & health drives</p>
+        </a>
+
+        <a href="javascript:void(0)" onclick="openModal('servicesModal')" class="card" style="text-decoration: none; color: inherit; border-top: 3px solid var(--success-color);">
+          <div style="font-size: 1.8rem; margin-bottom: 0.4rem;">📋</div>
+          <h4 style="font-size: 1.05rem; margin-bottom: 0.2rem; color: var(--primary-900);">Panchayat Services</h4>
+          <p style="font-size: 0.8rem; color: var(--text-muted); margin: 0;">Certificates, taxes & welfare schemes</p>
+        </a>
+
+      </div>
+
+      <!-- KPI Stats of Citizen's Own Grievances -->
+      <div class="kpi-grid">
+        <div class="kpi-card">
+          <div class="kpi-label">Total Filed by You</div>
+          <div class="kpi-val" id="statCitizenTotal">0</div>
+          <div class="kpi-subtext">All time registered tickets</div>
+        </div>
+
+        <div class="kpi-card kpi-pending">
+          <div class="kpi-label">Pending / Under Review</div>
+          <div class="kpi-val amber" id="statCitizenPending">0</div>
+          <div class="kpi-subtext">Awaiting field inspection</div>
+        </div>
+
+        <div class="kpi-card kpi-progress">
+          <div class="kpi-label">Action In Progress</div>
+          <div class="kpi-val blue" id="statCitizenProgress">0</div>
+          <div class="kpi-subtext">Maintenance teams assigned</div>
+        </div>
+
+        <div class="kpi-card kpi-resolved">
+          <div class="kpi-label">Successfully Resolved</div>
+          <div class="kpi-val success" id="statCitizenResolved">0</div>
+          <div class="kpi-subtext">Verified with completion notes</div>
+        </div>
+      </div>
+
+      <!-- Main Layout Split: My Complaints (Left 2.2fr) & Announcements (Right 0.8fr) -->
+      <div style="display: grid; grid-template-columns: 2.1fr 0.9fr; gap: 1.8rem; align-items: flex-start;">
+        
+        <!-- Left: My Complaints Feed -->
+        <div>
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; flex-wrap: wrap; gap: 0.5rem;">
+            <div>
+              <h2 style="font-size: 1.4rem; color: var(--primary-900); margin: 0;">My Registered Complaints</h2>
+              <p style="font-size: 0.82rem; color: var(--text-muted); margin: 0.15rem 0 0;">
+                Review grievance status, photo proofs, and administrative remarks.
+              </p>
+            </div>
+          </div>
+
+          <!-- Search & Filter Bar -->
+          <div class="toolbar" style="margin-bottom: 1.2rem; padding: 0.75rem 1rem;">
+            <div class="toolbar-search" style="min-width: 180px;">
+              <span class="toolbar-search-icon">🔍</span>
+              <input type="text" id="citizenSearchInput" placeholder="Filter by Ticket ID, Title, Category...">
+            </div>
+
+            <div class="toolbar-filter" style="min-width: 140px;">
+              <select id="citizenStatusFilter">
+                <option value="all">All Statuses</option>
+                <option value="Submitted">Submitted</option>
+                <option value="Under Review">Under Review</option>
+                <option value="In Progress">In Progress</option>
+                <option value="Resolved">Resolved</option>
+                <option value="Rejected">Rejected</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- Complaints Container -->
+          <div id="citizenComplaintsList">
+            <!-- Dynamically populated by js/citizen.js -->
+          </div>
+        </div>
+
+        <!-- Right: Recent Village Announcements & Helplines -->
+        <div>
+          <!-- Announcements Widget -->
+          <div class="card" style="margin-bottom: 1.5rem; border-top: 3px solid var(--accent-ochre);">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.85rem;">
+              <h3 style="font-size: 1.15rem; color: var(--primary-900); margin: 0;">Village Notices</h3>
+              <button class="btn btn-outline btn-sm" onclick="openModal('announcementsModal')">View All</button>
+            </div>
+            
+            <div id="citizenAnnouncementsList">
+              <!-- Dynamically populated -->
+            </div>
+          </div>
+
+          <!-- Need Help / Emergency Desk Card -->
+          <div class="card" style="background: var(--cream-bg); border-left: 4px solid var(--danger-color);">
+            <h4 style="font-size: 1.05rem; color: var(--danger-color); margin-bottom: 0.4rem;">
+              🚨 Need Immediate Assistance?
+            </h4>
+            <p style="font-size: 0.84rem; color: var(--text-ink); margin-bottom: 0.8rem; line-height: 1.5;">
+              For critical pipe bursts, high-voltage wire snapping, or medical emergencies, contact the 24x7 control desk:
+            </p>
+            <div style="font-size: 0.82rem; line-height: 1.6;">
+              <div>💧 <strong>Water Supply:</strong> 1800-233-0014</div>
+              <div>⚡ <strong>Power Breakdown:</strong> 1912</div>
+              <div>🚑 <strong>PHC Ambulance:</strong> 108</div>
+              <div>🏛️ <strong>Sarpanch Office:</strong> +91 94250 88100</div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+  </main>
+
+  <!-- MODAL: All Village Announcements -->
+  <div class="modal-backdrop" id="announcementsModal">
+    <div class="modal-box modal-lg">
+      <button class="modal-close" onclick="closeModal('announcementsModal')">×</button>
+      <div class="modal-header">
+        <h3 class="modal-title">📢 Village Announcements & Notices</h3>
+        <p class="modal-subtitle">Official notifications published by Sundarpur Gram Panchayat.</p>
+      </div>
+
+      <div id="modalAllAnnouncementsContainer" style="display: flex; flex-direction: column; gap: 1rem;">
+        <!-- Populated via script -->
+      </div>
+
+      <div class="modal-actions">
+        <button class="btn btn-primary btn-sm" onclick="closeModal('announcementsModal')">Close Notices</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL: Basic Panchayat Services Guide -->
+  <div class="modal-backdrop" id="servicesModal">
+    <div class="modal-box modal-lg">
+      <button class="modal-close" onclick="closeModal('servicesModal')">×</button>
+      <div class="modal-header">
+        <h3 class="modal-title">📋 Panchayat Citizen Services Directory</h3>
+        <p class="modal-subtitle">Procedures, turnaround times, and required documents for standard Panchayat certificates.</p>
+      </div>
+
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+        <div style="background: var(--cream-bg); border: 1px solid var(--border-soil); border-radius: var(--radius-sm); padding: 0.85rem;">
+          <h4 style="font-size: 0.95rem; color: var(--primary-900); margin-bottom: 0.2rem;">Birth / Death Certificate</h4>
+          <p style="font-size: 0.78rem; color: var(--text-muted); margin-bottom: 0.4rem;">Within 21 days of occurrence.</p>
+          <span style="font-size: 0.76rem; color: var(--primary-700); font-weight: 600;">TAT: 3 Working Days • Fee: Nil</span>
+        </div>
+
+        <div style="background: var(--cream-bg); border: 1px solid var(--border-soil); border-radius: var(--radius-sm); padding: 0.85rem;">
+          <h4 style="font-size: 0.95rem; color: var(--primary-900); margin-bottom: 0.2rem;">Property Tax (Namuna 8) Assessment</h4>
+          <p style="font-size: 0.78rem; color: var(--text-muted); margin-bottom: 0.4rem;">Village residential & shop assessment extract.</p>
+          <span style="font-size: 0.76rem; color: var(--primary-700); font-weight: 600;">TAT: 2 Working Days • Fee: ₹20</span>
+        </div>
+
+        <div style="background: var(--cream-bg); border: 1px solid var(--border-soil); border-radius: var(--radius-sm); padding: 0.85rem;">
+          <h4 style="font-size: 0.95rem; color: var(--primary-900); margin-bottom: 0.2rem;">Residence Certificate (Rahwasi Dakhla)</h4>
+          <p style="font-size: 0.78rem; color: var(--text-muted); margin-bottom: 0.4rem;">Proof of permanent residence in village.</p>
+          <span style="font-size: 0.76rem; color: var(--primary-700); font-weight: 600;">TAT: 1 Working Day • Fee: ₹10</span>
+        </div>
+
+        <div style="background: var(--cream-bg); border: 1px solid var(--border-soil); border-radius: var(--radius-sm); padding: 0.85rem;">
+          <h4 style="font-size: 0.95rem; color: var(--primary-900); margin-bottom: 0.2rem;">No Objection Certificate (NOC)</h4>
+          <p style="font-size: 0.78rem; color: var(--text-muted); margin-bottom: 0.4rem;">For electricity connection, water tap, or construction.</p>
+          <span style="font-size: 0.76rem; color: var(--primary-700); font-weight: 600;">TAT: 5 Working Days • Fee: ₹50</span>
+        </div>
+      </div>
+
+      <div class="modal-actions">
+        <button class="btn btn-primary btn-sm" onclick="closeModal('servicesModal')">Understood</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="site-footer">
+    <div class="wrap" style="text-align: center; font-size: 0.8rem; color: var(--text-muted);">
+      © 2026 Sundarpur Gram Panchayat • GramSetu Citizen Dashboard
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="js/app.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/citizen.js"></script>
+  <script>
+    // Populate all announcements modal
+    document.addEventListener('DOMContentLoaded', () => {
+      const container = document.getElementById('modalAllAnnouncementsContainer');
+      if (container) {
+        const announcements = getStorage(STORAGE_KEYS.ANNOUNCEMENTS, []);
+        container.innerHTML = announcements.map(a => `
+          <div style="background:var(--paper); border:1px solid var(--border-soil); border-radius:var(--radius-sm); padding:1rem; border-left:4px solid var(--accent-ochre);">
+            <div style="display:flex; justify-content:space-between; font-size:0.75rem; color:var(--text-muted); margin-bottom:0.3rem;">
+              <span class="pill pill-submitted">${escapeHtml(a.category)}</span>
+              <span>📅 ${formatDate(a.date)}</span>
+            </div>
+            <h4 style="font-size:1.1rem; color:var(--primary-900); margin-bottom:0.4rem;">${escapeHtml(a.title)}</h4>
+            <p style="font-size:0.88rem; color:var(--text-ink); margin-bottom:0.5rem; line-height:1.5;">${escapeHtml(a.description)}</p>
+            <div style="font-size:0.75rem; color:var(--text-muted);">Issued by: <strong>${escapeHtml(a.postedBy || 'Gram Sevak')}</strong></div>
+          </div>
+        `).join('');
+      }
+    });
+  </script>
+</body>
+</html>

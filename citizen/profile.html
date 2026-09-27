@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Citizen Profile — GramSetu</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+
+  <!-- Topbar -->
+  <div class="gov-topbar">
+    <div class="container">
+      <div>🇮🇳 Digital Gram Panchayat Platform • Citizen Profile</div>
+      <div>Helpline: <strong>1800-180-1551</strong></div>
+    </div>
+  </div>
+
+  <!-- Navbar -->
+  <nav class="navbar">
+    <div class="container nav-container">
+      <a href="index.html" class="brand">
+        <div class="brand-emblem">🏛️</div>
+        <div>
+          <div class="brand-title">Gram<span>Setu</span></div>
+          <div class="brand-subtitle">Citizen Profile</div>
+        </div>
+      </a>
+      <ul class="nav-menu" id="nav-menu">
+        <!-- Injected via auth.js -->
+      </ul>
+    </div>
+  </nav>
+
+  <!-- Main Container -->
+  <main style="padding: 2.5rem 0; flex: 1;">
+    <div class="container container-narrow">
+      
+      <div class="card">
+        <div class="card-header">
+          <div>
+            <h2 style="font-size: 1.4rem;">Citizen Profile Information</h2>
+            <p style="font-size: 0.8125rem; color: var(--text-muted); margin-top: 0.15rem;">
+              Manage your personal contact details and review your registered Gram Panchayat jurisdiction.
+            </p>
+          </div>
+          <span class="badge badge-resolved" id="p-verified-badge">✓ Mobile Verified</span>
+        </div>
+
+        <form id="profile-form" onsubmit="handleProfileUpdate(event)">
+          
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label">Full Name <span class="req">*</span></label>
+              <input type="text" id="p-name" class="form-control" required>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label">Registered Mobile Number</label>
+              <input type="text" id="p-mobile" class="form-control" readonly style="background: #f1f5f9; color: #475569;">
+              <div style="font-size: 0.75rem; color: var(--text-muted); margin-top: 0.25rem;">Primary authentication identifier (cannot be changed).</div>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Email Address</label>
+            <input type="email" id="p-email" class="form-control" placeholder="name@example.com">
+          </div>
+
+          <!-- Jurisdictional Location Card -->
+          <div style="background: #f8fafc; border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 1.25rem; margin-bottom: 1.5rem;">
+            <div style="font-weight: 700; font-size: 0.875rem; color: #1e293b; margin-bottom: 0.75rem;">
+              🏛️ Registered Administrative Jurisdiction (Panchayat Routing):
+            </div>
+
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; font-size: 0.85rem;">
+              <div>
+                <span style="color: var(--text-muted); font-size: 0.75rem; display: block; text-transform: uppercase;">State</span>
+                <strong id="p-state">-</strong>
+              </div>
+              <div>
+                <span style="color: var(--text-muted); font-size: 0.75rem; display: block; text-transform: uppercase;">District</span>
+                <strong id="p-district">-</strong>
+              </div>
+              <div>
+                <span style="color: var(--text-muted); font-size: 0.75rem; display: block; text-transform: uppercase;">Taluka / Block</span>
+                <strong id="p-taluka">-</strong>
+              </div>
+              <div>
+                <span style="color: var(--text-muted); font-size: 0.75rem; display: block; text-transform: uppercase;">Gram Panchayat</span>
+                <strong id="p-region" style="color: var(--primary);">-</strong>
+              </div>
+              <div style="grid-column: span 2;">
+                <span style="color: var(--text-muted); font-size: 0.75rem; display: block; text-transform: uppercase;">Ward / Local Area</span>
+                <strong id="p-ward">-</strong>
+              </div>
+            </div>
+          </div>
+
+          <button type="submit" id="btn-update-profile" class="btn btn-primary btn-block">
+            Save Profile Changes
+          </button>
+        </form>
+
+      </div>
+
+    </div>
+  </main>
+
+  <script src="js/config.js"></script>
+  <script src="js/api.js"></script>
+  <script src="js/auth.js"></script>
+  <script>
+    if (!CitizenAuth.requireAuth()) {
+      throw new Error('Unauthorized');
+    }
+
+    async function loadProfile() {
+      try {
+        const res = await GramSetuAPI.get('/citizen/profile');
+        if (res.success) {
+          const u = res.user;
+          document.getElementById('p-name').value = u.name || '';
+          document.getElementById('p-mobile').value = `+91 ${u.mobile}`;
+          document.getElementById('p-email').value = u.email || '';
+          document.getElementById('p-state').textContent = u.state ? (u.state.name || u.state) : '-';
+          document.getElementById('p-district').textContent = u.district ? (u.district.name || u.district) : '-';
+          document.getElementById('p-taluka').textContent = u.taluka ? (u.taluka.name || u.taluka) : '-';
+          document.getElementById('p-region').textContent = u.region ? (u.region.name || u.region) : '-';
+          document.getElementById('p-ward').textContent = u.ward ? (u.ward.name || `Ward ${u.ward.wardNumber}`) : 'General';
+        }
+      } catch (err) {
+        showToast(err.message || 'Failed to load profile.', 'error');
+      }
+    }
+
+    async function handleProfileUpdate(e) {
+      e.preventDefault();
+      const name = document.getElementById('p-name').value.trim();
+      const email = document.getElementById('p-email').value.trim();
+
+      const btn = document.getElementById('btn-update-profile');
+      btn.disabled = true;
+      btn.textContent = 'Saving Changes...';
+
+      try {
+        const res = await GramSetuAPI.put('/citizen/profile', { name, email });
+        if (res.success) {
+          showToast('Profile updated successfully!', 'success');
+          // Update local session
+          const user = CitizenAuth.getUser();
+          user.name = name;
+          user.email = email;
+          CitizenAuth.setSession(CitizenAuth.getToken(), user);
+          CitizenAuth.initNav();
+        }
+      } catch (err) {
+        showToast(err.message || 'Failed to update profile.', 'error');
+      } finally {
+        btn.disabled = false;
+        btn.textContent = 'Save Profile Changes';
+      }
+    }
+
+    loadProfile();
+  </script>
+</body>
+</html>

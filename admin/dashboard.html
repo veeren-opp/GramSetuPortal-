@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Regional Dashboard — GramSetu Admin</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+
+  <!-- Topbar -->
+  <div class="admin-topbar">
+    <div style="display: flex; align-items: center; gap: 0.75rem;">
+      <span>🇮🇳 Government of India • Panchayati Raj Administration</span>
+      <span>•</span>
+      <span>Regional E-Governance Console</span>
+    </div>
+    <div>
+      <span>Database Boundary: <strong style="color: #38bdf8;">Cloud Partitioned</strong></span>
+    </div>
+  </div>
+
+  <!-- Header -->
+  <header class="admin-header">
+    <div class="admin-brand">
+      <div class="admin-logo">🏛️</div>
+      <div>
+        <div class="admin-title">Gram<span>Setu</span> Regional Console</div>
+        <div class="admin-subtitle">Block Grievance Redressal Management</div>
+      </div>
+    </div>
+
+    <!-- Active Jurisdiction -->
+    <div class="region-jurisdiction-badge" id="header-jurisdiction-badge">
+      📍 Loading jurisdiction...
+    </div>
+
+    <!-- Nav & Admin Profile -->
+    <div style="display: flex; align-items: center; gap: 1.5rem;">
+      <ul class="admin-nav">
+        <li><a href="dashboard.html" class="admin-nav-link active">Dashboard</a></li>
+        <li><a href="complaints.html" class="admin-nav-link">Complaints</a></li>
+        <li><a href="profile.html" class="admin-nav-link">Profile</a></li>
+      </ul>
+
+      <div style="text-align: right; font-size: 0.85rem;">
+        <div style="font-weight: 700; color: var(--admin-navy);" id="header-admin-name">Officer Name</div>
+        <div style="font-size: 0.75rem; color: #64748b;" id="header-admin-desig">Regional Administrator</div>
+      </div>
+
+      <button onclick="AdminAuth.logout()" class="btn btn-secondary btn-sm" style="color: #b91c1c; border-color: #fca5a5;">
+        Sign Out 🚪
+      </button>
+    </div>
+  </header>
+
+  <!-- Main Container -->
+  <main class="admin-container">
+    
+    <!-- Region Isolation Notice -->
+    <div class="isolation-alert">
+      <div style="font-size: 1.5rem; line-height: 1;">🔒</div>
+      <div>
+        <strong>STRICT REGIONAL ISOLATION ENFORCED:</strong> You are currently triaging grievances filed strictly within 
+        <strong id="isolation-region-name" style="text-decoration: underline;">Your Gram Panchayat</strong>. 
+        Backend queries strictly enforce regional partitioning—complaints from other blocks are isolated at the database level.
+      </div>
+    </div>
+
+    <!-- KPI Summary Grid -->
+    <div class="admin-kpis">
+      <div class="kpi-box kpi-total">
+        <div class="kpi-num" id="kpi-total">0</div>
+        <div class="kpi-desc">Total In Region</div>
+      </div>
+      <div class="kpi-box kpi-submitted">
+        <div class="kpi-num" id="kpi-submitted" style="color: var(--status-submitted);">0</div>
+        <div class="kpi-desc">New / Submitted</div>
+      </div>
+      <div class="kpi-box kpi-review">
+        <div class="kpi-num" id="kpi-review" style="color: var(--status-review);">0</div>
+        <div class="kpi-desc">Under Review</div>
+      </div>
+      <div class="kpi-box kpi-progress">
+        <div class="kpi-num" id="kpi-progress" style="color: var(--status-progress);">0</div>
+        <div class="kpi-desc">In Progress</div>
+      </div>
+      <div class="kpi-box kpi-resolved">
+        <div class="kpi-num" id="kpi-resolved" style="color: var(--status-resolved);">0</div>
+        <div class="kpi-desc">Resolved</div>
+      </div>
+      <div class="kpi-box kpi-rejected">
+        <div class="kpi-num" id="kpi-rejected" style="color: var(--status-rejected);">0</div>
+        <div class="kpi-desc">Rejected</div>
+      </div>
+    </div>
+
+    <!-- Recent Grievances Card -->
+    <div class="card">
+      <div class="card-header">
+        <div>
+          <h3 style="font-size: 1.25rem;">Recent Regional Grievances</h3>
+          <p style="font-size: 0.8125rem; color: #64748b; margin-top: 0.2rem;">
+            Latest citizen complaints submitted from your Gram Panchayat jurisdiction.
+          </p>
+        </div>
+        <a href="complaints.html" class="btn btn-primary btn-sm">View All Complaints →</a>
+      </div>
+
+      <div class="data-table-container">
+        <table class="admin-table">
+          <thead>
+            <tr>
+              <th>Evidence</th>
+              <th>Complaint ID</th>
+              <th>Citizen Details</th>
+              <th>Issue & Category</th>
+              <th>Ward & Location</th>
+              <th>Date Filed</th>
+              <th>Status</th>
+              <th style="text-align: right;">Action</th>
+            </tr>
+          </thead>
+          <tbody id="recent-tbody">
+            <tr>
+              <td colspan="8" style="text-align: center; padding: 2.5rem; color: #64748b;">
+                Loading regional complaints from database...
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+  </main>
+
+  <script src="js/config.js"></script>
+  <script src="js/api.js"></script>
+  <script src="js/auth.js"></script>
+  <script>
+    if (!AdminAuth.requireAuth()) {
+      throw new Error('Unauthorized');
+    }
+
+    const getBadgeClass = (status) => {
+      switch (status) {
+        case 'Submitted': return 'badge-submitted';
+        case 'Under Review': return 'badge-under-review';
+        case 'In Progress': return 'badge-in-progress';
+        case 'Resolved': return 'badge-resolved';
+        case 'Rejected': return 'badge-rejected';
+        default: return 'badge-submitted';
+      }
+    };
+
+    async function loadDashboard() {
+      try {
+        const res = await AdminAPI.get('/admin/dashboard');
+        if (res.success) {
+          // Update Jurisdiction Tags
+          const regionName = res.region ? (res.region.name || res.region) : 'Assigned Jurisdiction';
+          document.getElementById('isolation-region-name').textContent = regionName;
+          document.getElementById('header-jurisdiction-badge').textContent = `📍 ${regionName}`;
+
+          // Update KPIs
+          document.getElementById('kpi-total').textContent = res.stats.total;
+          document.getElementById('kpi-submitted').textContent = res.stats.submitted;
+          document.getElementById('kpi-review').textContent = res.stats.underReview;
+          document.getElementById('kpi-progress').textContent = res.stats.inProgress;
+          document.getElementById('kpi-resolved').textContent = res.stats.resolved;
+          document.getElementById('kpi-rejected').textContent = res.stats.rejected;
+
+          // Render Recents
+          const tbody = document.getElementById('recent-tbody');
+          const complaints = res.recentComplaints || [];
+
+          if (complaints.length === 0) {
+            tbody.innerHTML = `
+              <tr>
+                <td colspan="8" style="text-align: center; padding: 3rem; color: #64748b;">
+                  No complaints currently logged in this Gram Panchayat.
+                </td>
+              </tr>
+            `;
+            return;
+          }
+
+          tbody.innerHTML = complaints.map(c => {
+            const dateStr = new Date(c.createdAt).toLocaleDateString('en-IN', {
+              day: 'numeric',
+              month: 'short',
+              year: 'numeric'
+            });
+
+            return `
+              <tr>
+                <td>
+                  <a href="complaint-details.html?id=${c.complaintId}">
+                    <img src="${c.imageUrl}" class="evidence-thumb" alt="Evidence" onerror="this.src='https://via.placeholder.com/50?text=Photo'">
+                  </a>
+                </td>
+                <td>
+                  <strong style="color: var(--admin-navy); font-family: monospace;">${c.complaintId}</strong>
+                </td>
+                <td>
+                  <div style="font-weight: 700; color: #0f172a;">${c.citizenName}</div>
+                  <div style="font-size: 0.75rem; color: #64748b;">📞 +91 ${c.citizenMobile}</div>
+                </td>
+                <td>
+                  <div style="font-weight: 600; color: #1e293b; max-width: 220px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${c.title}</div>
+                  <span style="font-size: 0.75rem; color: #0284c7; font-weight: 600;">${c.category}</span>
+                </td>
+                <td>
+                  <div>${c.ward ? (c.ward.name || `Ward ${c.ward.wardNumber}`) : 'General'}</div>
+                  <div style="font-size: 0.75rem; color: #64748b; max-width: 180px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${c.location}</div>
+                </td>
+                <td style="font-size: 0.8125rem; color: #64748b;">${dateStr}</td>
+                <td><span class="badge ${getBadgeClass(c.status)}">${c.status}</span></td>
+                <td style="text-align: right;">
+                  <a href="complaint-details.html?id=${c.complaintId}" class="btn btn-secondary btn-sm">
+                    Triage & Review →
+                  </a>
+                </td>
+              </tr>
+            `;
+          }).join('');
+        }
+      } catch (err) {
+        showToast(err.message || 'Failed to load dashboard data.', 'error');
+      }
+    }
+
+    loadDashboard();
+  </script>
+</body>
+</html>

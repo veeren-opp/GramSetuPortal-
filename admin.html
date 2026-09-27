@@ -1,0 +1,578 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Panchayat Official Action Center | GramSetu</title>
+  <meta name="description" content="Panchayat Administrative Action Center for Sundarpur Gram Panchayat. Review citizen grievances, inspect photo evidence, update statuses with remarks, and manage village development works.">
+  
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,500;0,600;0,700;1,500&family=Hind:wght@400;500;600;700&display=swap" rel="stylesheet">
+  
+  <!-- Shared Stylesheet -->
+  <link rel="stylesheet" href="css/style.css">
+  
+  <style>
+    .admin-nav-tabs {
+      display: flex;
+      gap: 0.5rem;
+      border-bottom: 2px solid var(--border-soil);
+      margin-bottom: 1.8rem;
+      overflow-x: auto;
+      white-space: nowrap;
+    }
+    .admin-nav-tab {
+      padding: 0.75rem 1.25rem;
+      font-size: 0.92rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      background: transparent;
+      border: none;
+      border-bottom: 3px solid transparent;
+      margin-bottom: -2px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 0.45rem;
+      transition: var(--transition);
+      font-family: var(--sans);
+    }
+    .admin-nav-tab:hover {
+      color: var(--primary-900);
+      background: var(--primary-100);
+      border-radius: var(--radius-xs) var(--radius-xs) 0 0;
+    }
+    .admin-nav-tab.active {
+      color: var(--primary-900);
+      border-bottom-color: var(--accent-ochre);
+      font-weight: 700;
+      background: var(--paper);
+    }
+    .admin-profile-box {
+      display: flex;
+      align-items: center;
+      gap: 0.65rem;
+    }
+    .admin-avatar {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: var(--primary-700);
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.85rem;
+      font-weight: 700;
+      border: 1px solid var(--primary-500);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Top Government Strip -->
+  <div class="top-gov-strip">
+    <div class="wrap">
+      <div class="top-gov-info">
+        <span>🏛️ Department of Panchayati Raj • Government of Maharashtra</span>
+        <span class="panchayat-pill">Sundarpur Gram Panchayat • Official Action Center</span>
+      </div>
+      <div class="top-gov-right">
+        <span>Authenticated Session: Administrator</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Site Header -->
+  <header class="site-header">
+    <div class="wrap">
+      <a href="index.html" class="brand">
+        <div class="brand-emblem">🌾</div>
+        <div class="brand-title">
+          <span class="brand-name">GramSetu <small>Panchayat Official Action Center</small></span>
+        </div>
+      </a>
+
+      <div style="display: flex; align-items: center; gap: 1.25rem;">
+        <span class="user-chip admin-badge">
+          🔑 Panchayat Official
+        </span>
+
+        <div class="admin-profile-box">
+          <div class="admin-avatar">RS</div>
+          <div style="font-size: 0.84rem; line-height: 1.2;">
+            <strong id="adminOfficerName" style="color:var(--primary-900); display:block;">Rajesh Soni</strong>
+            <small id="adminOfficerDesignation" style="color:var(--text-muted);">Gram Sevak</small>
+          </div>
+        </div>
+
+        <button class="btn btn-outline-ochre btn-sm" onclick="Auth.logout()">Log out</button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main class="main-content" style="padding: 2rem 0 4rem;">
+    <div class="wrap">
+
+      <!-- Page Title & Actions -->
+      <div style="display: flex; justify-content: space-between; align-items: flex-end; flex-wrap: wrap; gap: 1rem; margin-bottom: 1.6rem;">
+        <div>
+          <h1 style="font-size: 1.85rem; color: var(--primary-900); margin: 0 0 0.25rem;">
+            Panchayat Grievance & Development Control Desk
+          </h1>
+          <p style="font-size: 0.9rem; color: var(--text-muted); margin: 0; max-width: 60ch;">
+            Review incoming citizen complaints, inspect uploaded photographic evidence, assign field officers, record administrative remarks, and publish village notices.
+          </p>
+        </div>
+
+        <div style="display: flex; gap: 0.6rem; flex-wrap: wrap;">
+          <button type="button" class="btn btn-outline btn-sm" onclick="openModal('addAnnouncementModal')">
+            📢 Post Announcement
+          </button>
+          <button type="button" class="btn btn-ochre btn-sm" onclick="openModal('addProjectModal')">
+            ➕ Register Development Project
+          </button>
+        </div>
+      </div>
+
+      <!-- Live Dynamic KPI Cards (Calculated from localStorage) -->
+      <div class="kpi-grid">
+        <div class="kpi-card">
+          <div class="kpi-label">
+            <span>Total Grievances</span>
+            <span>📋</span>
+          </div>
+          <div class="kpi-val" id="kpiTotalComplaints">0</div>
+          <div class="kpi-subtext">All complaints registered in portal</div>
+        </div>
+
+        <div class="kpi-card kpi-pending">
+          <div class="kpi-label">
+            <span>Pending / Under Review</span>
+            <span>⏳</span>
+          </div>
+          <div class="kpi-val amber" id="kpiPendingComplaints">0</div>
+          <div class="kpi-subtext">Awaiting inspection or assignment</div>
+        </div>
+
+        <div class="kpi-card kpi-progress">
+          <div class="kpi-label">
+            <span>Action In Progress</span>
+            <span>⚡</span>
+          </div>
+          <div class="kpi-val blue" id="kpiProgressComplaints">0</div>
+          <div class="kpi-subtext">Maintenance teams on site</div>
+        </div>
+
+        <div class="kpi-card kpi-resolved">
+          <div class="kpi-label">
+            <span>Resolved with Photo Proof</span>
+            <span>✓</span>
+          </div>
+          <div class="kpi-val success" id="kpiResolvedComplaints">0</div>
+          <div class="kpi-subtext">Closed tickets with remarks</div>
+        </div>
+
+        <div class="kpi-card kpi-citizens">
+          <div class="kpi-label">
+            <span>Registered Citizens</span>
+            <span>👥</span>
+          </div>
+          <div class="kpi-val" id="kpiTotalCitizens">0</div>
+          <div class="kpi-subtext">Active portal residents</div>
+        </div>
+      </div>
+
+      <!-- Admin Navigation Tabs -->
+      <div class="admin-nav-tabs">
+        <button class="admin-nav-tab active" id="adminTabBtn_complaints" onclick="switchAdminTab('complaints')">
+          📢 Citizen Complaints
+        </button>
+        <button class="admin-nav-tab" id="adminTabBtn_announcements" onclick="switchAdminTab('announcements')">
+          🔔 Announcements Manager
+        </button>
+        <button class="admin-nav-tab" id="adminTabBtn_projects" onclick="switchAdminTab('projects')">
+          🏗️ Development Works
+        </button>
+        <button class="admin-nav-tab" id="adminTabBtn_citizens" onclick="switchAdminTab('citizens')">
+          👥 Registered Citizens
+        </button>
+      </div>
+
+      <!-- TAB 1: CITIZEN COMPLAINTS MANAGEMENT -->
+      <section id="adminTabSection_complaints">
+        
+        <!-- Search & Filter Toolbar -->
+        <div class="toolbar">
+          
+          <div class="toolbar-search">
+            <span class="toolbar-search-icon">🔍</span>
+            <input type="text" id="adminSearchInput" placeholder="Search by Ticket ID, Title, Citizen Name, or Location...">
+          </div>
+
+          <div class="toolbar-filter">
+            <select id="adminFilterCategory">
+              <option value="all">All Categories</option>
+              <option value="Water Supply">💧 Water Supply</option>
+              <option value="Street Lights">💡 Street Lights</option>
+              <option value="Roads">🛣️ Roads</option>
+              <option value="Drainage">🌊 Drainage</option>
+              <option value="Sanitation">🧹 Sanitation</option>
+              <option value="Electricity">⚡ Electricity</option>
+              <option value="Waste Management">🗑️ Waste Management</option>
+              <option value="Other">📋 Other</option>
+            </select>
+          </div>
+
+          <div class="toolbar-filter">
+            <select id="adminFilterStatus">
+              <option value="all">All Statuses</option>
+              <option value="Submitted">Submitted</option>
+              <option value="Under Review">Under Review</option>
+              <option value="In Progress">In Progress</option>
+              <option value="Resolved">Resolved</option>
+              <option value="Rejected">Rejected</option>
+            </select>
+          </div>
+
+          <div class="toolbar-filter">
+            <select id="adminFilterPriority">
+              <option value="all">All Priorities</option>
+              <option value="High">🔴 High Priority</option>
+              <option value="Medium">🟡 Medium Priority</option>
+              <option value="Low">🟢 Low Priority</option>
+            </select>
+          </div>
+
+          <div class="toolbar-filter">
+            <select id="adminFilterWard">
+              <option value="all">All Wards</option>
+              <option value="Ward 1 - Shivaji Nagar">Ward 1</option>
+              <option value="Ward 2 - Shanti Nagar">Ward 2</option>
+              <option value="Ward 3 - Bazar Peth">Ward 3</option>
+              <option value="Ward 4 - Gandhi Chowk">Ward 4</option>
+              <option value="Ward 5 - Ambedkar Colony">Ward 5</option>
+              <option value="Ward 6 - Kranti Nagar">Ward 6</option>
+            </select>
+          </div>
+
+          <div>
+            <button type="button" class="btn btn-outline btn-sm" id="btnClearFilters">
+              ✕ Clear Filters
+            </button>
+          </div>
+
+        </div>
+
+        <!-- Table Count Indicator -->
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.75rem; font-size:0.84rem; color:var(--text-muted);">
+          <span id="filteredComplaintsCount">Loading tickets...</span>
+          <span>Tip: Click on any thumbnail image to inspect photo evidence</span>
+        </div>
+
+        <!-- Complaints Table -->
+        <div class="table-panel">
+          <div class="table-responsive">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>Ticket ID</th>
+                  <th>Grievance Summary & Ward</th>
+                  <th>Citizen Info</th>
+                  <th>Priority</th>
+                  <th>Status</th>
+                  <th>Photo Evidence</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody id="adminComplaintsTbody">
+                <!-- Dynamically rendered by js/admin.js -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+      </section>
+
+      <!-- TAB 2: ANNOUNCEMENTS MANAGER -->
+      <section id="adminTabSection_announcements" style="display: none;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.25rem;">
+          <div>
+            <h3 style="font-size: 1.3rem; color: var(--primary-900); margin: 0;">Village Announcements & Public Notices</h3>
+            <p style="font-size: 0.85rem; color: var(--text-muted); margin: 0.2rem 0 0;">
+              Announcements published here are instantly visible on the citizen landing page and dashboard.
+            </p>
+          </div>
+          <button class="btn btn-primary btn-sm" onclick="openModal('addAnnouncementModal')">
+            ➕ Post New Notice
+          </button>
+        </div>
+
+        <div id="adminAnnouncementsList">
+          <!-- Populated dynamically -->
+        </div>
+      </section>
+
+      <!-- TAB 3: DEVELOPMENT PROJECTS -->
+      <section id="adminTabSection_projects" style="display: none;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.25rem;">
+          <div>
+            <h3 style="font-size: 1.3rem; color: var(--primary-900); margin: 0;">Village Infrastructure & Development Projects</h3>
+            <p style="font-size: 0.85rem; color: var(--text-muted); margin: 0.2rem 0 0;">
+              Sanctioned civic projects, contractor allocations, budget expenditure, and physical execution progress.
+            </p>
+          </div>
+          <button class="btn btn-ochre btn-sm" onclick="openModal('addProjectModal')">
+            ➕ Register Development Project
+          </button>
+        </div>
+
+        <div id="adminProjectsList">
+          <!-- Populated dynamically -->
+        </div>
+      </section>
+
+      <!-- TAB 4: REGISTERED CITIZENS DIRECTORY -->
+      <section id="adminTabSection_citizens" style="display: none;">
+        <div style="margin-bottom: 1.25rem;">
+          <h3 style="font-size: 1.3rem; color: var(--primary-900); margin: 0;">Registered Citizens Directory</h3>
+          <p style="font-size: 0.85rem; color: var(--text-muted); margin: 0.2rem 0 0;">
+            Residents authenticated with Sundarpur Gram Panchayat portal.
+          </p>
+        </div>
+
+        <div class="table-panel">
+          <div class="table-responsive">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>Resident Full Name</th>
+                  <th>Email Address</th>
+                  <th>Mobile Phone</th>
+                  <th>Registered Ward</th>
+                  <th>Grievances Filed</th>
+                  <th>Account Status</th>
+                </tr>
+              </thead>
+              <tbody id="adminCitizensTbody">
+                <!-- Populated dynamically -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+    </div>
+  </main>
+
+  <!-- =========================================================================
+       MODALS
+       ========================================================================= -->
+
+  <!-- 1. ADMIN ACTION & STATUS UPDATE MODAL -->
+  <div class="modal-backdrop" id="adminActionModal">
+    <div class="modal-box modal-lg">
+      <button class="modal-close" onclick="closeModal('adminActionModal')">×</button>
+      
+      <div class="modal-header">
+        <div style="display: flex; justify-content: space-between; align-items: baseline;">
+          <span class="ticket-id" id="actionModalId" style="font-size: 1.25rem;">CMP-2026-0001</span>
+          <span style="font-size: 0.78rem; color: var(--text-muted);">Panchayat Redressal Order</span>
+        </div>
+        <h3 class="modal-title" id="actionModalTitle" style="margin-top: 0.3rem;">Issue Title</h3>
+        <p class="modal-subtitle" id="actionModalMeta"></p>
+      </div>
+
+      <!-- Problem Description Box -->
+      <div style="background: var(--cream-bg); border: 1px solid var(--border-soil); border-radius: var(--radius-sm); padding: 0.9rem; margin-bottom: 1.25rem;">
+        <label style="display: block; font-size: 0.75rem; text-transform: uppercase; font-weight: 700; color: var(--text-muted); margin-bottom: 0.25rem;">
+          Citizen's Problem Description:
+        </label>
+        <p id="actionModalDesc" style="font-size: 0.88rem; color: var(--text-ink); margin: 0; line-height: 1.5;"></p>
+      </div>
+
+      <!-- Citizen's Uploaded Photo Preview in Modal -->
+      <div style="margin-bottom: 1.25rem;" id="actionModalPhotoContainer">
+        <!-- Rendered by js/admin.js -->
+      </div>
+
+      <!-- Action Form -->
+      <form id="adminActionForm">
+        
+        <div class="form-row">
+          
+          <div class="form-group">
+            <label for="actionModalStatus">Update Resolution Status <span class="req">*</span></label>
+            <select id="actionModalStatus" class="form-control" required>
+              <option value="Submitted">Submitted (Registered)</option>
+              <option value="Under Review">Under Review (Ward Inspection)</option>
+              <option value="In Progress">In Progress (Maintenance Team Assigned)</option>
+              <option value="Resolved">Resolved (Work Completed & Verified)</option>
+              <option value="Rejected">Rejected (Out of scope / Duplicate)</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="actionModalOfficer">Assign Field Officer / Contractor</label>
+            <input type="text" id="actionModalOfficer" class="form-control" placeholder="e.g. Er. Suresh Kale (PWD) / Jal Nigam Team">
+          </div>
+
+        </div>
+
+        <div class="form-group">
+          <label for="actionModalRemark">Administrative Remark & Action Taken Notes <span class="req">*</span></label>
+          <textarea id="actionModalRemark" rows="3" class="form-control" placeholder="Describe the maintenance action, materials replaced, or inspection report (e.g. 'Street light repair team has been assigned. 45W LED fixture installed.')."></textarea>
+          <span class="form-hint">This remark will immediately appear on the citizen's tracking page.</span>
+        </div>
+
+        <div class="modal-actions">
+          <button type="button" class="btn btn-outline" onclick="closeModal('adminActionModal')">Cancel</button>
+          <button type="submit" class="btn btn-primary">💾 Save Status & Record Official Action</button>
+        </div>
+
+      </form>
+    </div>
+  </div>
+
+  <!-- 2. ADD ANNOUNCEMENT MODAL -->
+  <div class="modal-backdrop" id="addAnnouncementModal">
+    <div class="modal-box">
+      <button class="modal-close" onclick="closeModal('addAnnouncementModal')">×</button>
+      <div class="modal-header">
+        <h3 class="modal-title">📢 Post New Village Announcement</h3>
+        <p class="modal-subtitle">Publish an official circular on the GramSetu notice board.</p>
+      </div>
+
+      <form id="addAnnouncementForm">
+        <div class="form-group">
+          <label for="newAnnTitle">Announcement Title <span class="req">*</span></label>
+          <input type="text" id="newAnnTitle" class="form-control" placeholder="e.g. Gram Sabha Special Meeting on Water Conservation" required>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="newAnnCategory">Category <span class="req">*</span></label>
+            <select id="newAnnCategory" class="form-control" required>
+              <option value="Gram Sabha">Gram Sabha Meeting</option>
+              <option value="Water Supply">Water Supply Update</option>
+              <option value="Cleanliness">Cleanliness & Sanitation</option>
+              <option value="Health">Health & Immunization</option>
+              <option value="Agriculture">Agriculture & Subsidies</option>
+              <option value="General">General Notice</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="newAnnDate">Notice / Event Date <span class="req">*</span></label>
+            <input type="date" id="newAnnDate" class="form-control" required>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="newAnnDesc">Full Announcement Details <span class="req">*</span></label>
+          <textarea id="newAnnDesc" rows="4" class="form-control" placeholder="Specify meeting venue, agenda, time, instructions, and who should attend..." required></textarea>
+        </div>
+
+        <div class="modal-actions">
+          <button type="button" class="btn btn-outline" onclick="closeModal('addAnnouncementModal')">Cancel</button>
+          <button type="submit" class="btn btn-primary">Publish to Notice Board</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- 3. ADD DEVELOPMENT PROJECT MODAL -->
+  <div class="modal-backdrop" id="addProjectModal">
+    <div class="modal-box modal-lg">
+      <button class="modal-close" onclick="closeModal('addProjectModal')">×</button>
+      <div class="modal-header">
+        <h3 class="modal-title">🏗️ Register New Village Development Project</h3>
+        <p class="modal-subtitle">Record sanctioned civic works for proactive public disclosure and social audit.</p>
+      </div>
+
+      <form id="addProjectForm">
+        <div class="form-row">
+          <div class="form-group">
+            <label for="newProjName">Project Title <span class="req">*</span></label>
+            <input type="text" id="newProjName" class="form-control" placeholder="e.g. Concrete Road & Paver Blocks" required>
+          </div>
+          <div class="form-group">
+            <label for="newProjScheme">Government Funding Scheme <span class="req">*</span></label>
+            <input type="text" id="newProjScheme" class="form-control" placeholder="e.g. 15th Finance Commission / Jal Jeevan Mission" required>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="newProjCategory">Work Category <span class="req">*</span></label>
+            <select id="newProjCategory" class="form-control" required>
+              <option value="Roads">Roads & Connectivity</option>
+              <option value="Water Supply">Drinking Water & RO Plant</option>
+              <option value="Drainage">Underground Drainage</option>
+              <option value="Sanitation">Community Sanitation & Toilets</option>
+              <option value="Electricity">Solar Street Lighting</option>
+              <option value="Digital Services">Community Digital Centre</option>
+              <option value="Education">Anganwadi & School Repair</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="newProjWard">Ward Coverage <span class="req">*</span></label>
+            <input type="text" id="newProjWard" class="form-control" placeholder="e.g. Ward 2 & Ward 4" required>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="newProjBudget">Sanctioned Budget (₹ in Lakhs) <span class="req">*</span></label>
+            <input type="number" id="newProjBudget" step="0.01" min="0" class="form-control" placeholder="e.g. 18.50" required>
+          </div>
+          <div class="form-group">
+            <label for="newProjSpent">Expenditure to Date (₹ in Lakhs)</label>
+            <input type="number" id="newProjSpent" step="0.01" min="0" class="form-control" placeholder="e.g. 6.20">
+          </div>
+          <div class="form-group">
+            <label for="newProjProgress">Execution Progress (%)</label>
+            <input type="number" id="newProjProgress" min="0" max="100" class="form-control" placeholder="0 - 100">
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="newProjTargetDate">Target Completion Date <span class="req">*</span></label>
+            <input type="date" id="newProjTargetDate" class="form-control" required>
+          </div>
+          <div class="form-group">
+            <label for="newProjContractor">Contractor / Executing Agency</label>
+            <input type="text" id="newProjContractor" class="form-control" placeholder="e.g. Sharda Civil Infrastructure Ltd.">
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="newProjDesc">Scope & Technical Specifications</label>
+          <textarea id="newProjDesc" rows="3" class="form-control" placeholder="Explain length of road, water filtration capacity, or expected beneficiaries..."></textarea>
+        </div>
+
+        <div class="modal-actions">
+          <button type="button" class="btn btn-outline" onclick="closeModal('addProjectModal')">Cancel</button>
+          <button type="submit" class="btn btn-primary">Register Project & Publish</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="site-footer">
+    <div class="wrap" style="text-align: center; font-size: 0.78rem; color: var(--text-muted);">
+      © 2026 Sundarpur Gram Panchayat • GramSetu Official Administration Action Center
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="js/app.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/admin.js"></script>
+</body>
+</html>

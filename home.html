@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>GramSetu | Digital Gram Panchayat & Smart Village Portal</title>
+  <meta name="description" content="Digital public service gateway for Sundarpur Gram Panchayat. File grievances with photo evidence, track redressal turnaround time, inspect village development funds, and access public services.">
+  
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,500;0,600;0,700;1,500&family=Hind:wght@400;500;600;700&display=swap" rel="stylesheet">
+  
+  <!-- Stylesheet -->
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <!-- Top Government Strip -->
+  <div class="top-gov-strip">
+    <div class="wrap">
+      <div class="top-gov-info">
+        <span>🏛️ Department of Panchayati Raj • Government of Maharashtra</span>
+        <span class="panchayat-pill">Sundarpur Gram Panchayat • Block: Ramnagar • Dist: Buldhana</span>
+      </div>
+      <div class="top-gov-right">
+        <span>🕒 Official Portal • 24x7 Citizen Desk</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Header & Navigation -->
+  <header class="site-header">
+    <div class="wrap">
+      <a href="index.html" class="brand">
+        <div class="brand-emblem">🌾</div>
+        <div class="brand-title">
+          <span class="brand-name">GramSetu <small>ग्राम सेतु — Digital Smart Village Portal</small></span>
+        </div>
+      </a>
+
+      <!-- Desktop Nav -->
+      <nav class="site-nav">
+        <a href="index.html" class="active">🏠 Home</a>
+        <a href="#services">🛠️ Services</a>
+        <a href="#development">🏗️ Development</a>
+        <a href="#announcements">📢 Announcements</a>
+        <a href="#about">ℹ️ About</a>
+        <a href="#contact">📞 Contact</a>
+      </nav>
+
+      <!-- Auth Action Container -->
+      <div class="nav-right-actions">
+        <div id="headerAuthContainer">
+          <a href="login.html" class="btn btn-primary btn-sm">Log in</a>
+        </div>
+        <button class="mobile-nav-toggle" aria-label="Toggle navigation">☰</button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main class="main-content">
+
+    <!-- HERO SECTION -->
+    <section class="hero" style="padding: 3.5rem 0 3rem; border-bottom: 1px solid var(--border-soil);">
+      <div class="wrap" style="display: grid; grid-template-columns: 1.15fr 0.85fr; gap: 2.5rem; align-items: center;">
+        
+        <div>
+          <div style="font-size: 0.86rem; color: var(--primary-700); font-weight: 700; margin-bottom: 0.6rem; text-transform: uppercase; letter-spacing: 0.05em;">
+            🌾 Digital Gateway to a Smarter Village
+          </div>
+          <h1 style="font-size: 2.5rem; line-height: 1.18; color: var(--primary-900); margin-bottom: 1rem;">
+            Empowering Rural Citizens through Digital Panchayat Governance.
+          </h1>
+          <p style="font-size: 1.05rem; color: var(--text-muted); line-height: 1.6; max-width: 48ch; margin-bottom: 1.8rem;">
+            GramSetu directly connects rural residents with the Panchayat administration. Submit grievances with photo evidence, track real-time resolution, and inspect transparent village development funds.
+          </p>
+
+          <div style="display: flex; gap: 0.85rem; flex-wrap: wrap;">
+            <a href="login.html" class="btn btn-ochre btn-lg">🧑‍🌾 Citizen Login</a>
+            <a href="#services" class="btn btn-outline btn-lg">Explore Services</a>
+            <a href="track.html" class="btn btn-primary btn-lg">🔍 Track Grievance</a>
+          </div>
+
+          <div style="margin-top: 1.2rem; font-size: 0.82rem; color: var(--text-muted);">
+            ✓ 100% Client-side • Works in any browser • Zero external backend setup required
+          </div>
+        </div>
+
+        <!-- Live Panchayat Notice Board -->
+        <div class="card" style="background: var(--primary-900); color: #EFE8D6; border: none; padding: 1.8rem; box-shadow: var(--shadow-xl); position: relative;">
+          <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px dashed rgba(239, 232, 214, 0.25); padding-bottom: 0.75rem; margin-bottom: 1.1rem;">
+            <h3 style="font-size: 1.15rem; color: #F4EFDD; margin: 0; font-family: var(--serif);">
+              Sundarpur Gram Panchayat
+            </h3>
+            <span class="pill pill-resolved" style="background: rgba(47, 122, 79, 0.4); border-color: rgba(47, 122, 79, 0.6); color: #A7F3D0;">
+              Live Data
+            </span>
+          </div>
+
+          <div style="display: flex; justify-content: space-between; align-items: baseline; padding: 0.6rem 0; border-bottom: 1px dashed rgba(239, 232, 214, 0.15);">
+            <span style="font-size: 0.88rem; color: #D8CFAE;">Total Grievances Registered</span>
+            <span style="font-family: var(--serif); font-size: 1.6rem; font-weight: 700; color: #FFF;" id="heroTotalComplaints">5</span>
+          </div>
+
+          <div style="display: flex; justify-content: space-between; align-items: baseline; padding: 0.6rem 0; border-bottom: 1px dashed rgba(239, 232, 214, 0.15);">
+            <span style="font-size: 0.88rem; color: #D8CFAE;">Resolved with Photo Verification</span>
+            <span style="font-family: var(--serif); font-size: 1.6rem; font-weight: 700; color: #34D399;" id="heroResolvedComplaints">2 (40%)</span>
+          </div>
+
+          <div style="display: flex; justify-content: space-between; align-items: baseline; padding: 0.6rem 0; border-bottom: 1px dashed rgba(239, 232, 214, 0.15);">
+            <span style="font-size: 0.88rem; color: #D8CFAE;">Active Development Works</span>
+            <span style="font-family: var(--serif); font-size: 1.6rem; font-weight: 700; color: var(--accent-ochre);" id="heroActiveProjects">3</span>
+          </div>
+
+          <div style="display: flex; justify-content: space-between; align-items: baseline; padding: 0.6rem 0;">
+            <span style="font-size: 0.88rem; color: #D8CFAE;">Average Turnaround Time (TAT)</span>
+            <span style="font-family: var(--serif); font-size: 1.4rem; font-weight: 700; color: #93C5FD;">48 Hours</span>
+          </div>
+
+          <div style="margin-top: 1.25rem; padding-top: 0.85rem; border-top: 1px solid rgba(239, 232, 214, 0.2); font-size: 0.78rem; color: #B7AD8E; display: flex; justify-content: space-between; align-items: center;">
+            <span>Data synced via browser localStorage</span>
+            <a href="login.html" style="color: var(--accent-ochre); font-weight: 600;">Admin Sign-in →</a>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- SERVICES SECTION -->
+    <section id="services" style="padding: 4rem 0 3.5rem;">
+      <div class="wrap">
+        <div style="text-align: center; max-width: 58ch; margin: 0 auto 2.8rem;">
+          <span style="font-size: 0.82rem; font-weight: 700; color: var(--primary-700); text-transform: uppercase; letter-spacing: 0.05em;">Digital Public Services</span>
+          <h2 style="font-size: 2rem; margin: 0.4rem 0 0.6rem; color: var(--primary-900);">Everything you need from your Gram Panchayat</h2>
+          <p style="color: var(--text-muted); font-size: 0.95rem;">Transparent, paperless, and mobile-friendly services for every resident of the village.</p>
+        </div>
+
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem;">
+          
+          <!-- Card 1 -->
+          <div class="card" style="border-top: 4px solid var(--accent-ochre);">
+            <div style="font-size: 2rem; margin-bottom: 0.75rem;">📢</div>
+            <h3 style="font-size: 1.2rem; margin-bottom: 0.4rem;">Submit Complaint</h3>
+            <p style="font-size: 0.88rem; color: var(--text-muted); margin-bottom: 1.2rem; line-height: 1.5;">
+              Report broken streetlights, water pipeline leaks, road potholes, or drainage blocks. Attach actual photographs as evidence.
+            </p>
+            <a href="complaint.html" class="btn btn-primary btn-sm">File Grievance →</a>
+          </div>
+
+          <!-- Card 2 -->
+          <div class="card" style="border-top: 4px solid var(--accent-blue);">
+            <div style="font-size: 2rem; margin-bottom: 0.75rem;">🔍</div>
+            <h3 style="font-size: 1.2rem; margin-bottom: 0.4rem;">Track Complaint</h3>
+            <p style="font-size: 0.88rem; color: var(--text-muted); margin-bottom: 1.2rem; line-height: 1.5;">
+              Monitor the live progress of your ticket from submission to inspection, field work, and final closure with official remarks.
+            </p>
+            <a href="track.html" class="btn btn-outline btn-sm">Track by Ticket ID →</a>
+          </div>
+
+          <!-- Card 3 -->
+          <div class="card" style="border-top: 4px solid var(--primary-700);">
+            <div style="font-size: 2rem; margin-bottom: 0.75rem;">🏗️</div>
+            <h3 style="font-size: 1.2rem; margin-bottom: 0.4rem;">Development Works</h3>
+            <p style="font-size: 0.88rem; color: var(--text-muted); margin-bottom: 1.2rem; line-height: 1.5;">
+              Public social audit of ongoing and completed village civil infrastructure projects, sanctioned budgets, and expenditures.
+            </p>
+            <a href="#development" class="btn btn-outline btn-sm">Inspect Funds →</a>
+          </div>
+
+          <!-- Card 4 -->
+          <div class="card" style="border-top: 4px solid var(--success-color);">
+            <div style="font-size: 2rem; margin-bottom: 0.75rem;">📜</div>
+            <h3 style="font-size: 1.2rem; margin-bottom: 0.4rem;">Panchayat Services</h3>
+            <p style="font-size: 0.88rem; color: var(--text-muted); margin-bottom: 1.2rem; line-height: 1.5;">
+              Information on applying for birth/death certificates, property tax assessment, residential proof, and caste verifications.
+            </p>
+            <a href="citizen.html" class="btn btn-outline btn-sm">View Procedures →</a>
+          </div>
+
+          <!-- Card 5 -->
+          <div class="card" style="border-top: 4px solid #7C3AED;">
+            <div style="font-size: 2rem; margin-bottom: 0.75rem;">🔔</div>
+            <h3 style="font-size: 1.2rem; margin-bottom: 0.4rem;">Announcements</h3>
+            <p style="font-size: 0.88rem; color: var(--text-muted); margin-bottom: 1.2rem; line-height: 1.5;">
+              Stay informed about upcoming Gram Sabha meetings, vaccination drives, agricultural subsidies, and water supply schedules.
+            </p>
+            <a href="#announcements" class="btn btn-outline btn-sm">Read Notices →</a>
+          </div>
+
+          <!-- Card 6 -->
+          <div class="card" style="border-top: 4px solid var(--danger-color);">
+            <div style="font-size: 2rem; margin-bottom: 0.75rem;">🚨</div>
+            <h3 style="font-size: 1.2rem; margin-bottom: 0.4rem;">Citizen Support</h3>
+            <p style="font-size: 0.88rem; color: var(--text-muted); margin-bottom: 1.2rem; line-height: 1.5;">
+              Direct emergency helplines for water pipeline bursts, power breakdowns, medical emergencies, and the Sarpanch desk.
+            </p>
+            <a href="#contact" class="btn btn-outline btn-sm">Emergency Desk →</a>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- DEVELOPMENT PROJECTS SECTION -->
+    <section id="development" style="padding: 3.5rem 0; background: var(--primary-100); border-top: 1px solid var(--border-soil); border-bottom: 1px solid var(--border-soil);">
+      <div class="wrap">
+        <div style="display: flex; justify-content: space-between; align-items: flex-end; flex-wrap: wrap; gap: 1rem; margin-bottom: 2.2rem;">
+          <div>
+            <span style="font-size: 0.82rem; font-weight: 700; color: var(--primary-700); text-transform: uppercase; letter-spacing: 0.05em;">Social Audit & Transparency</span>
+            <h2 style="font-size: 1.85rem; margin: 0.3rem 0 0; color: var(--primary-900);">Village Development & Infrastructure Works</h2>
+          </div>
+          <div>
+            <span style="font-size: 0.84rem; color: var(--text-muted);">Open data compliant with RTI Act proactive disclosure</span>
+          </div>
+        </div>
+
+        <div id="homeProjectsContainer" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 1.5rem;">
+          <!-- Dynamically populated from localStorage -->
+        </div>
+      </div>
+    </section>
+
+    <!-- ANNOUNCEMENTS & NOTICES SECTION -->
+    <section id="announcements" style="padding: 4rem 0 3.5rem;">
+      <div class="wrap">
+        <div style="text-align: center; max-width: 58ch; margin: 0 auto 2.5rem;">
+          <span style="font-size: 0.82rem; font-weight: 700; color: var(--primary-700); text-transform: uppercase; letter-spacing: 0.05em;">Panchayat Notice Board</span>
+          <h2 style="font-size: 1.85rem; margin: 0.3rem 0 0.5rem; color: var(--primary-900);">Public Notices & Official Announcements</h2>
+          <p style="color: var(--text-muted); font-size: 0.95rem;">Important village communications, health camps, and Gram Sabha schedules.</p>
+        </div>
+
+        <div id="homeAnnouncementsContainer" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem;">
+          <!-- Dynamically populated from localStorage -->
+        </div>
+      </div>
+    </section>
+
+    <!-- ABOUT GRAMSETU (Viva & Presentation Section) -->
+    <section id="about" style="padding: 4rem 0; background: var(--paper); border-top: 1px solid var(--border-soil); border-bottom: 1px solid var(--border-soil);">
+      <div class="wrap" style="display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; align-items: center;">
+        <div>
+          <span style="font-size: 0.82rem; font-weight: 700; color: var(--primary-700); text-transform: uppercase; letter-spacing: 0.05em;">About The Project</span>
+          <h2 style="font-size: 2rem; color: var(--primary-900); margin: 0.4rem 0 1rem;">
+            Bridging the Gap Between Villagers & Panchayat Administration
+          </h2>
+          <p style="font-size: 0.96rem; color: var(--text-ink); line-height: 1.65; margin-bottom: 1rem;">
+            <strong>GramSetu (ग्राम सेतु)</strong> translates to <em>"Village Bridge"</em>. In traditional rural governance, citizens often have to visit the Panchayat office multiple times to report civic grievances like broken handpumps or streetlights, with no record or accountability.
+          </p>
+          <p style="font-size: 0.94rem; color: var(--text-muted); line-height: 1.65; margin-bottom: 1.4rem;">
+            GramSetu digitizes this workflow into a transparent, client-side web application. Citizens upload real photographs as evidence, get unique tracking numbers, and view official administrative updates. Officials update tickets with verified remarks, promoting complete social accountability.
+          </p>
+          
+          <div style="display: flex; gap: 0.75rem; flex-wrap: wrap;">
+            <div style="background: var(--cream-bg); border: 1px solid var(--border-soil); border-radius: var(--radius-sm); padding: 0.75rem 1rem;">
+              <strong style="display: block; font-size: 1.1rem; color: var(--primary-700);">100% Client-Side</strong>
+              <span style="font-size: 0.75rem; color: var(--text-muted);">Runs directly in the browser</span>
+            </div>
+            <div style="background: var(--cream-bg); border: 1px solid var(--border-soil); border-radius: var(--radius-sm); padding: 0.75rem 1rem;">
+              <strong style="display: block; font-size: 1.1rem; color: var(--accent-ochre-dark);">FileReader API</strong>
+              <span style="font-size: 0.75rem; color: var(--text-muted);">Base64 photo evidence</span>
+            </div>
+            <div style="background: var(--cream-bg); border: 1px solid var(--border-soil); border-radius: var(--radius-sm); padding: 0.75rem 1rem;">
+              <strong style="display: block; font-size: 1.1rem; color: var(--success-color);">LocalStorage</strong>
+              <span style="font-size: 0.75rem; color: var(--text-muted);">Persistent offline data store</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="card" style="background: var(--cream-bg); border-left: 4px solid var(--primary-700);">
+          <h4 style="font-size: 1.1rem; color: var(--primary-900); margin-bottom: 0.85rem;">Key Capabilities & Flow</h4>
+          
+          <ul style="list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 0.85rem; font-size: 0.9rem;">
+            <li style="display: flex; gap: 0.6rem;">
+              <span style="color: var(--primary-700); font-weight: 700;">1.</span>
+              <span><strong>Citizen Filing:</strong> Citizen inputs issue category, location, and attaches photo. FileReader converts it to Base64 data URL.</span>
+            </li>
+            <li style="display: flex; gap: 0.6rem;">
+              <span style="color: var(--primary-700); font-weight: 700;">2.</span>
+              <span><strong>Ticket Sequence:</strong> System generates unique tracking ID (e.g. <code>CMP-2026-0001</code>) and stores record in browser localStorage.</span>
+            </li>
+            <li style="display: flex; gap: 0.6rem;">
+              <span style="color: var(--primary-700); font-weight: 700;">3.</span>
+              <span><strong>Admin Inspection:</strong> Panchayat administrator logs in, inspects the exact uploaded photo, and updates status with official remarks.</span>
+            </li>
+            <li style="display: flex; gap: 0.6rem;">
+              <span style="color: var(--primary-700); font-weight: 700;">4.</span>
+              <span><strong>Public Tracking:</strong> Citizen enters ticket ID to observe real-time status changes and field notes on the 4-stage visual timeline.</span>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- EMERGENCY HOTLINES STRIP -->
+    <section id="contact" style="background: var(--primary-900); color: #EFE8D6; padding: 1.8rem 0;">
+      <div class="wrap" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;">
+        <div style="font-size: 0.95rem;">
+          🚨 <strong>Village Emergency Helpline:</strong> Call <strong>108</strong> for Ambulance, <strong>1912</strong> for Electricity Grid, or <strong>+91 94250 88100</strong> for Sarpanch Citizen Desk.
+        </div>
+        <div>
+          <a href="login.html" class="btn btn-ochre btn-sm">Citizen Support Portal →</a>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Footer -->
+  <footer class="site-footer">
+    <div class="wrap">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.4rem;">
+            <span style="font-size: 1.4rem;">🌾</span>
+            <h4 style="margin: 0; font-family: var(--serif); font-size: 1.25rem;">GramSetu</h4>
+          </div>
+          <p>
+            A Digital Public Good for Rural Governance, Citizen Grievance Redressal, and Village Infrastructure Transparency. Built with pure HTML5, CSS3, and Vanilla JavaScript.
+          </p>
+        </div>
+
+        <div class="footer-col">
+          <h5>Quick Links</h5>
+          <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="login.html">Login Portal</a></li>
+            <li><a href="complaint.html">Submit Complaint</a></li>
+            <li><a href="track.html">Track Complaint</a></li>
+            <li><a href="citizen.html">Citizen Dashboard</a></li>
+            <li><a href="admin.html">Admin Action Center</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-col">
+          <h5>Panchayat Services</h5>
+          <ul>
+            <li><a href="complaint.html?category=Water%20Supply">Drinking Water</a></li>
+            <li><a href="complaint.html?category=Street%20Lights">Street Lights</a></li>
+            <li><a href="complaint.html?category=Roads">Road Maintenance</a></li>
+            <li><a href="complaint.html?category=Drainage">Sanitation & Drainage</a></li>
+            <li><a href="#development">Village Works Audit</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-col">
+          <h5>Panchayat Office</h5>
+          <div class="footer-emergency-desk">
+            <strong>Sundarpur Gram Panchayat Bhawan</strong>
+            <span>Block: Ramnagar • Dist: Buldhana<br>Maharashtra — 443001</span>
+            <div style="margin-top: 0.5rem; font-size: 0.8rem; color: var(--primary-700); font-weight: 600;">
+              📞 Sarpanch Desk: +91 94250 88100<br>
+              ✉️ gramsevak@gramsetu.com
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <span>© 2026 Sundarpur Gram Panchayat • Department of Panchayati Raj & Rural Development</span>
+        <span>Built for College CSE Capstone Project & Viva Presentation</span>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="js/app.js"></script>
+  <script src="js/auth.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      // Sync KPIs on home board
+      const complaints = getStorage(STORAGE_KEYS.COMPLAINTS, []);
+      const projects = getStorage(STORAGE_KEYS.PROJECTS, []);
+      const announcements = getStorage(STORAGE_KEYS.ANNOUNCEMENTS, []);
+
+      const total = complaints.length;
+      const resolved = complaints.filter(c => c.status === 'Resolved').length;
+      const pct = total > 0 ? Math.round((resolved / total) * 100) : 0;
+      const activeProj = projects.filter(p => p.status === 'Ongoing' || p.status === 'Planned').length;
+
+      const totalEl = document.getElementById('heroTotalComplaints');
+      const resolvedEl = document.getElementById('heroResolvedComplaints');
+      const projEl = document.getElementById('heroActiveProjects');
+
+      if (totalEl) totalEl.textContent = total;
+      if (resolvedEl) resolvedEl.textContent = `${resolved} (${pct}%)`;
+      if (projEl) projEl.textContent = activeProj;
+
+      // Render home development projects
+      const projContainer = document.getElementById('homeProjectsContainer');
+      if (projContainer) {
+        projContainer.innerHTML = projects.slice(0, 3).map(p => {
+          const isComp = p.status === 'Completed';
+          return `
+            <div class="card" style="border-top:3px solid var(--primary-700);">
+              <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:0.5rem;">
+                <span class="pill ${isComp ? 'pill-resolved' : 'pill-under-review'}">${p.status}</span>
+                <span style="font-weight:700; font-family:var(--serif); color:var(--primary-900);">₹ ${p.budgetLakhs.toFixed(2)} Lakhs</span>
+              </div>
+              <h4 style="font-size:1.1rem; color:var(--primary-900); margin-bottom:0.35rem;">${escapeHtml(p.name)}</h4>
+              <p style="font-size:0.84rem; color:var(--text-muted); margin-bottom:0.75rem; line-height:1.45;">${escapeHtml(p.description)}</p>
+              
+              <div style="margin-bottom:0.6rem;">
+                <div style="display:flex; justify-content:space-between; font-size:0.76rem; font-weight:600;">
+                  <span>Progress</span>
+                  <span>${p.progressPercent}%</span>
+                </div>
+                <div class="progress-bar-wrap">
+                  <div class="progress-bar-fill ${isComp ? 'success' : 'ochre'}" style="width: ${p.progressPercent}%;"></div>
+                </div>
+              </div>
+
+              <div style="font-size:0.76rem; color:var(--text-muted); display:flex; justify-content:space-between; border-top:1px solid var(--border-soil); padding-top:0.6rem;">
+                <span>🏘️ ${escapeHtml(p.ward)}</span>
+                <span>📅 Due: ${formatDate(p.targetDate)}</span>
+              </div>
+            </div>
+          `;
+        }).join('');
+      }
+
+      // Render home announcements
+      const annContainer = document.getElementById('homeAnnouncementsContainer');
+      if (annContainer) {
+        annContainer.innerHTML = announcements.slice(0, 3).map(a => `
+          <div class="card" style="border-left: 4px solid var(--accent-ochre);">
+            <div style="display:flex; justify-content:space-between; font-size:0.74rem; color:var(--text-muted); margin-bottom:0.3rem;">
+              <span class="pill pill-submitted">${escapeHtml(a.category)}</span>
+              <span>📅 ${formatDate(a.date)}</span>
+            </div>
+            <h4 style="font-size:1.05rem; color:var(--primary-900); margin-bottom:0.35rem;">${escapeHtml(a.title)}</h4>
+            <p style="font-size:0.86rem; color:var(--text-muted); line-height:1.45;">${escapeHtml(a.description)}</p>
+            <div style="margin-top:0.6rem; font-size:0.74rem; color:var(--text-muted);">
+              Issued by: <strong>${escapeHtml(a.postedBy || 'Gram Sevak Office')}</strong>
+            </div>
+          </div>
+        `).join('');
+      }
+    });
+  </script>
+</body>
+</html>

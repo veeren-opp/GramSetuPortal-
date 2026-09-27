@@ -1,0 +1,547 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Grievance Triage & Redressal — GramSetu Admin</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    .details-grid {
+      display: grid;
+      grid-template-columns: 1.4fr 1fr;
+      gap: 1.5rem;
+      align-items: start;
+    }
+    .evidence-container {
+      background: #0f172a;
+      border-radius: var(--radius-md);
+      overflow: hidden;
+      text-align: center;
+      margin-bottom: 1.5rem;
+      border: 1px solid #1e293b;
+    }
+    .evidence-img {
+      max-height: 420px;
+      width: 100%;
+      object-fit: contain;
+      cursor: zoom-in;
+      transition: transform 0.2s ease;
+      display: block;
+    }
+    .evidence-footer {
+      background: #020617;
+      color: #94a3b8;
+      font-size: 0.8125rem;
+      padding: 0.6rem 1rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .preset-pill {
+      font-size: 0.75rem;
+      padding: 0.25rem 0.6rem;
+      background: #f1f5f9;
+      color: #475569;
+      border: 1px solid #cbd5e1;
+      border-radius: 9999px;
+      cursor: pointer;
+      display: inline-block;
+      margin-bottom: 0.4rem;
+      transition: var(--transition);
+    }
+    .preset-pill:hover {
+      background: #e0f2fe;
+      color: #0369a1;
+      border-color: #7dd3fc;
+    }
+    .lightbox-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(15, 23, 42, 0.9);
+      backdrop-filter: blur(4px);
+      z-index: 1000;
+      align-items: center;
+      justify-content: center;
+      padding: 1.5rem;
+    }
+    @media (max-width: 992px) {
+      .details-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+    @media print {
+      .admin-topbar, .admin-header, .btn, .toolbar, .admin-nav, #action-panel, .preset-pill {
+        display: none !important;
+      }
+      .details-grid {
+        display: block !important;
+      }
+      body {
+        background: #fff !important;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Topbar -->
+  <div class="admin-topbar">
+    <div>🇮🇳 Government of India • Panchayati Raj Administration • Grievance Redressal Action Center</div>
+    <div>Database Boundary: <strong style="color: #38bdf8;">Regional Partition Enforced</strong></div>
+  </div>
+
+  <!-- Header -->
+  <header class="admin-header">
+    <div class="admin-brand">
+      <div class="admin-logo">🏛️</div>
+      <div>
+        <div class="admin-title">Gram<span>Setu</span> Regional Console</div>
+        <div class="admin-subtitle">Official Grievance Action Portal</div>
+      </div>
+    </div>
+
+    <!-- Active Jurisdiction -->
+    <div class="region-jurisdiction-badge" id="header-jurisdiction-badge">
+      📍 Loading jurisdiction...
+    </div>
+
+    <!-- Nav & Admin Profile -->
+    <div style="display: flex; align-items: center; gap: 1.5rem;">
+      <ul class="admin-nav">
+        <li><a href="dashboard.html" class="admin-nav-link">Dashboard</a></li>
+        <li><a href="complaints.html" class="admin-nav-link active">Complaints</a></li>
+        <li><a href="profile.html" class="admin-nav-link">Profile</a></li>
+      </ul>
+
+      <div style="text-align: right; font-size: 0.85rem;">
+        <div style="font-weight: 700; color: var(--admin-navy);" id="header-admin-name">Officer Name</div>
+        <div style="font-size: 0.75rem; color: #64748b;" id="header-admin-desig">Regional Administrator</div>
+      </div>
+
+      <button onclick="AdminAuth.logout()" class="btn btn-secondary btn-sm" style="color: #b91c1c; border-color: #fca5a5;">
+        Sign Out 🚪
+      </button>
+    </div>
+  </header>
+
+  <!-- Main Container -->
+  <main class="admin-container">
+    
+    <!-- Breadcrumb & Quick Actions -->
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.25rem; flex-wrap: wrap; gap: 0.75rem;">
+      <div>
+        <a href="complaints.html" class="btn btn-secondary btn-sm">
+          ← Back to Complaints Table
+        </a>
+      </div>
+      <div style="display: flex; gap: 0.5rem;">
+        <button onclick="window.print()" class="btn btn-secondary btn-sm">
+          🖨️ Print Grievance Dossier
+        </button>
+      </div>
+    </div>
+
+    <!-- Loading State -->
+    <div id="loading-card" class="card" style="text-align: center; padding: 4rem;">
+      <div style="font-size: 2.5rem; margin-bottom: 0.75rem;">⏳</div>
+      <h3 style="font-size: 1.2rem; color: var(--admin-navy);">Loading Grievance Dossier...</h3>
+      <p style="font-size: 0.875rem; color: #64748b; margin-top: 0.25rem;">
+        Verifying administrative jurisdiction and querying Cloudinary photographic evidence.
+      </p>
+    </div>
+
+    <!-- Error State -->
+    <div id="error-card" class="card" style="display: none; border-left: 5px solid #dc2626; padding: 2rem;">
+      <div style="display: flex; align-items: flex-start; gap: 1rem;">
+        <div style="font-size: 2rem; line-height: 1;">🚫</div>
+        <div>
+          <h3 id="error-title" style="color: #b91c1c; font-size: 1.2rem;">Access Denied / Jurisdiction Violation</h3>
+          <p id="error-message" style="color: #475569; margin: 0.5rem 0 1rem 0; font-size: 0.95rem;">
+            You do not have administrative authority to inspect or modify grievances filed outside your assigned Gram Panchayat.
+          </p>
+          <a href="complaints.html" class="btn btn-primary btn-sm">Return to Regional Triage</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Grievance Dossier Content -->
+    <div id="content-container" style="display: none;">
+      
+      <div class="details-grid">
+        
+        <!-- Left: Case Details & Photographic Proof -->
+        <div>
+          
+          <!-- Grievance Overview Card -->
+          <div class="card">
+            <div class="card-header" style="flex-wrap: wrap; gap: 0.75rem;">
+              <div>
+                <span id="badge-status" class="badge">Status</span>
+                <h1 id="ticket-id" style="font-size: 1.6rem; font-family: monospace; font-weight: 800; color: var(--admin-navy); margin-top: 0.35rem;">
+                  CMP-2026-XXXXXX
+                </h1>
+              </div>
+              <div style="text-align: right; font-size: 0.8125rem; color: #64748b;">
+                <div>Submitted: <strong id="ticket-created" style="color: #0f172a;">-</strong></div>
+                <div style="margin-top: 0.25rem;">Last Action: <strong id="ticket-updated" style="color: #0f172a;">-</strong></div>
+              </div>
+            </div>
+
+            <!-- Photographic Evidence Display -->
+            <div class="evidence-container">
+              <img id="evidence-img" class="evidence-img" src="" alt="Photographic Proof" onclick="openLightbox(this.src)" title="Click to view full-resolution photo in Lightbox">
+              <div class="evidence-footer">
+                <span>📸 Verified On-Site Photographic Evidence (Cloudinary Cloud Storage)</span>
+                <a id="evidence-raw-link" href="#" target="_blank" style="color: #38bdf8; text-decoration: underline;">
+                  View Original CDN URL ↗
+                </a>
+              </div>
+            </div>
+
+            <!-- Grievance Title & Detailed Statement -->
+            <div style="margin-bottom: 1.5rem;">
+              <span id="ticket-category-tag" style="display: inline-block; font-size: 0.8125rem; font-weight: 700; color: #0284c7; background: #e0f2fe; padding: 0.2rem 0.6rem; border-radius: 4px; margin-bottom: 0.5rem;">Category</span>
+              <h2 id="ticket-title" style="font-size: 1.35rem; color: var(--admin-navy); margin-bottom: 0.5rem;">Grievance Title</h2>
+              <div id="ticket-desc" style="font-size: 0.95rem; color: #334155; line-height: 1.65; white-space: pre-wrap; background: #f8fafc; padding: 1rem; border-radius: var(--radius-sm); border: 1px solid var(--admin-border);">
+                Detailed description of the issue...
+              </div>
+            </div>
+
+            <!-- Citizen & Location Data Grid -->
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1rem; background: #f1f5f9; padding: 1.25rem; border-radius: var(--radius-md); font-size: 0.875rem;">
+              <div>
+                <span style="font-size: 0.75rem; text-transform: uppercase; color: #64748b; font-weight: 700; display: block;">Reporting Citizen</span>
+                <strong id="citizen-name" style="color: #0f172a; font-size: 1rem;">-</strong>
+                <div style="font-size: 0.8125rem; color: #475569; margin-top: 0.2rem;">
+                  📞 <span id="citizen-phone">-</span>
+                </div>
+                <div style="font-size: 0.75rem; color: #64748b;">
+                  ✉️ <span id="citizen-email">-</span>
+                </div>
+              </div>
+
+              <div>
+                <span style="font-size: 0.75rem; text-transform: uppercase; color: #64748b; font-weight: 700; display: block;">Jurisdiction Hierarchy</span>
+                <div style="font-weight: 600; color: #0f172a;" id="loc-region">Gram Panchayat</div>
+                <div style="font-size: 0.8125rem; color: #475569;" id="loc-ward">Ward Number</div>
+                <div style="font-size: 0.75rem; color: #64748b;" id="loc-taluka-district">Taluka / District</div>
+              </div>
+
+              <div>
+                <span style="font-size: 0.75rem; text-transform: uppercase; color: #64748b; font-weight: 700; display: block;">Exact Landmark / Street</span>
+                <strong id="loc-landmark" style="color: #0f172a;">-</strong>
+              </div>
+            </div>
+
+          </div>
+
+          <!-- Redressal Progress & Status Audit Timeline -->
+          <div class="card">
+            <h3 style="font-size: 1.1rem; color: var(--admin-navy); margin-bottom: 0.25rem;">
+              Official Audit Trail & Timeline
+            </h3>
+            <p style="font-size: 0.8125rem; color: #64748b; margin-bottom: 1.25rem;">
+              Complete chronological audit of status transitions and official administrative remarks.
+            </p>
+
+            <div class="timeline" id="audit-timeline">
+              <!-- Injected dynamically -->
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Right: Official Action & Triage Console -->
+        <div id="action-panel">
+          <div class="card" style="position: sticky; top: 5rem; border-top: 4px solid var(--admin-accent);">
+            <div class="card-header">
+              <h3 style="font-size: 1.15rem; color: var(--admin-navy);">
+                Official Action Center ✍️
+              </h3>
+            </div>
+
+            <form id="update-form" onsubmit="handleStatusUpdate(event)">
+              
+              <!-- Status Select -->
+              <div style="margin-bottom: 1.25rem;">
+                <label for="status-select" style="display: block; font-size: 0.8125rem; font-weight: 700; color: #334155; margin-bottom: 0.4rem; text-transform: uppercase;">
+                  Grievance Redressal Status <span style="color: #dc2626;">*</span>
+                </label>
+                <select id="status-select" class="form-select" style="width: 100%; font-weight: 600;" required>
+                  <option value="Submitted">Submitted (Awaiting Triage)</option>
+                  <option value="Under Review">Under Review (Inspecting)</option>
+                  <option value="In Progress">In Progress (Field Work Active)</option>
+                  <option value="Resolved">Resolved (Redressed with Proof)</option>
+                  <option value="Rejected">Rejected (Out of Scope / Invalid)</option>
+                </select>
+              </div>
+
+              <!-- Assigned Field Officer -->
+              <div style="margin-bottom: 1.25rem;">
+                <label for="officer-input" style="display: block; font-size: 0.8125rem; font-weight: 700; color: #334155; margin-bottom: 0.4rem; text-transform: uppercase;">
+                  Assigned Field Officer / Team
+                </label>
+                <input type="text" id="officer-input" class="form-input" style="width: 100%;" placeholder="e.g. Shri R.K. Sharma (JE PWD)">
+              </div>
+
+              <!-- Quick Presets -->
+              <div style="margin-bottom: 0.75rem;">
+                <label style="display: block; font-size: 0.75rem; font-weight: 700; color: #64748b; margin-bottom: 0.35rem; text-transform: uppercase;">
+                  Quick Standard Responses:
+                </label>
+                <div>
+                  <span class="preset-pill" onclick="applyPreset('Field team dispatched for on-site inspection.', 'Under Review')">🔍 Inspection Dispatched</span>
+                  <span class="preset-pill" onclick="applyPreset('Work in progress. Materials sanctioned under Gram Panchayat development fund.', 'In Progress')">🛠️ Work Underway</span>
+                  <span class="preset-pill" onclick="applyPreset('Grievance fully rectified and verified on site by Panchayat representative.', 'Resolved')">✅ Issue Rectified</span>
+                  <span class="preset-pill" onclick="applyPreset('Jurisdiction redirected: Subject matter pertains to State PWD Highway authority.', 'Rejected')">⚠️ Out of Scope</span>
+                </div>
+              </div>
+
+              <!-- Administrative Remarks -->
+              <div style="margin-bottom: 1.5rem;">
+                <label for="remarks-input" style="display: block; font-size: 0.8125rem; font-weight: 700; color: #334155; margin-bottom: 0.4rem; text-transform: uppercase;">
+                  Official Administrative Remarks <span style="color: #dc2626;">*</span>
+                </label>
+                <textarea id="remarks-input" class="form-input" rows="4" style="width: 100%; resize: vertical;" placeholder="Enter clear administrative notes. This remark is visible to the citizen on their live tracking dashboard..." required></textarea>
+                <div style="font-size: 0.75rem; color: #64748b; margin-top: 0.25rem;">
+                  ℹ️ Remarks are permanently recorded into the official audit trail and immediately visible to the citizen.
+                </div>
+              </div>
+
+              <!-- Submit Button -->
+              <button type="submit" id="btn-save" class="btn btn-primary btn-block" style="padding: 0.75rem 1rem;">
+                💾 Save & Transition Status
+              </button>
+            </form>
+
+            <div style="margin-top: 1.25rem; padding-top: 1.25rem; border-top: 1px solid var(--admin-border); font-size: 0.8125rem; color: #64748b;">
+              <div>🔐 <strong>Jurisdiction Lock:</strong> You are authorized to modify this grievance as an official administrator of this Gram Panchayat.</div>
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+
+  </main>
+
+  <!-- Photo Lightbox Modal -->
+  <div id="lightbox-modal" class="lightbox-overlay" onclick="closeLightbox()">
+    <div style="position: relative; max-width: 90vw; max-height: 90vh; text-align: center;" onclick="event.stopPropagation()">
+      <button class="btn btn-secondary btn-sm" style="position: absolute; top: -2.5rem; right: 0; background: #fff;" onclick="closeLightbox()">✕ Close Preview</button>
+      <img id="lightbox-img" src="" alt="Full Photographic Proof" style="max-width: 90vw; max-height: 85vh; object-fit: contain; border-radius: var(--radius-md); box-shadow: var(--shadow-lg);">
+    </div>
+  </div>
+
+  <script src="js/config.js"></script>
+  <script src="js/api.js"></script>
+  <script src="js/auth.js"></script>
+  <script>
+    if (!AdminAuth.requireAuth()) {
+      throw new Error('Unauthorized');
+    }
+
+    const urlParams = new URLSearchParams(window.location.search);
+    const complaintId = urlParams.get('id');
+
+    if (!complaintId) {
+      window.location.href = 'complaints.html';
+    }
+
+    const getBadgeClass = (status) => {
+      switch (status) {
+        case 'Submitted': return 'badge-submitted';
+        case 'Under Review': return 'badge-under-review';
+        case 'In Progress': return 'badge-in-progress';
+        case 'Resolved': return 'badge-resolved';
+        case 'Rejected': return 'badge-rejected';
+        default: return 'badge-submitted';
+      }
+    };
+
+    function applyPreset(text, suggestedStatus) {
+      document.getElementById('remarks-input').value = text;
+      if (suggestedStatus) {
+        document.getElementById('status-select').value = suggestedStatus;
+      }
+    }
+
+    function openLightbox(url) {
+      document.getElementById('lightbox-img').src = url;
+      document.getElementById('lightbox-modal').style.display = 'flex';
+    }
+
+    function closeLightbox() {
+      document.getElementById('lightbox-modal').style.display = 'none';
+    }
+
+    async function loadComplaint() {
+      try {
+        const res = await AdminAPI.get(`/admin/complaints/${complaintId}`);
+        if (!res.success) {
+          throw new Error(res.message || 'Unable to load complaint.');
+        }
+
+        const c = res.complaint;
+
+        // Populate Ticket Overview
+        document.getElementById('ticket-id').textContent = c.complaintId;
+        const statusBadge = document.getElementById('badge-status');
+        statusBadge.textContent = c.status;
+        statusBadge.className = `badge ${getBadgeClass(c.status)}`;
+
+        document.getElementById('ticket-created').textContent = new Date(c.createdAt).toLocaleDateString('en-IN', {
+          day: 'numeric',
+          month: 'short',
+          year: 'numeric',
+          hour: '2-digit',
+          minute: '2-digit'
+        });
+
+        document.getElementById('ticket-updated').textContent = new Date(c.updatedAt).toLocaleDateString('en-IN', {
+          day: 'numeric',
+          month: 'short',
+          year: 'numeric',
+          hour: '2-digit',
+          minute: '2-digit'
+        });
+
+        // Evidence photo
+        const img = document.getElementById('evidence-img');
+        img.src = c.imageUrl;
+        img.onerror = () => { img.src = 'https://via.placeholder.com/600x350?text=No+Photo+Uploaded'; };
+        document.getElementById('evidence-raw-link').href = c.imageUrl;
+
+        // Category & Texts
+        document.getElementById('ticket-category-tag').textContent = `Category: ${c.category}`;
+        document.getElementById('ticket-title').textContent = c.title;
+        document.getElementById('ticket-desc').textContent = c.description;
+
+        // Citizen Details
+        document.getElementById('citizen-name').textContent = c.citizenName || (c.citizen && c.citizen.name) || 'Anonymous Citizen';
+        document.getElementById('citizen-phone').textContent = c.citizenMobile ? `+91 ${c.citizenMobile}` : '-';
+        document.getElementById('citizen-email').textContent = (c.citizen && c.citizen.email) ? c.citizen.email : 'Not provided';
+
+        // Location Info
+        const regName = c.region ? (c.region.name || c.region) : 'Assigned GP';
+        const wardStr = c.ward ? (c.ward.name || `Ward No. ${c.ward.wardNumber}`) : 'Ward Unspecified';
+        const talukaStr = c.taluka ? (c.taluka.name || '') : '';
+        const distStr = c.district ? (c.district.name || '') : '';
+
+        document.getElementById('loc-region').textContent = `GP: ${regName}`;
+        document.getElementById('loc-ward').textContent = wardStr;
+        document.getElementById('loc-taluka-district').textContent = [talukaStr, distStr].filter(Boolean).join(' • ');
+        document.getElementById('loc-landmark').textContent = c.location;
+
+        // Action Form Defaults
+        document.getElementById('status-select').value = c.status;
+        document.getElementById('officer-input').value = c.assignedOfficer || '';
+        document.getElementById('remarks-input').value = c.adminRemark || '';
+
+        // Audit Timeline
+        renderTimeline(c.statusHistory || [], c);
+
+        // Toggle Views
+        document.getElementById('loading-card').style.display = 'none';
+        document.getElementById('error-card').style.display = 'none';
+        document.getElementById('content-container').style.display = 'block';
+
+      } catch (err) {
+        document.getElementById('loading-card').style.display = 'none';
+        document.getElementById('content-container').style.display = 'none';
+        document.getElementById('error-card').style.display = 'block';
+        document.getElementById('error-message').textContent = err.message || 'Jurisdiction Violation: This record belongs to a different Gram Panchayat or does not exist.';
+      }
+    }
+
+    function renderTimeline(history, complaint) {
+      const container = document.getElementById('audit-timeline');
+      if (!history || history.length === 0) {
+        history = [
+          {
+            status: complaint.status,
+            changedBy: complaint.citizenName || 'Citizen',
+            remarks: 'Grievance ticket created.',
+            timestamp: complaint.createdAt
+          }
+        ];
+      }
+
+      container.innerHTML = history.slice().reverse().map(item => {
+        const timeStr = new Date(item.timestamp).toLocaleString('en-IN', {
+          day: 'numeric',
+          month: 'short',
+          year: 'numeric',
+          hour: '2-digit',
+          minute: '2-digit'
+        });
+
+        return `
+          <div class="timeline-item">
+            <div class="timeline-dot"></div>
+            <div class="timeline-content">
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.25rem;">
+                <span class="badge ${getBadgeClass(item.status)}">${item.status}</span>
+                <span style="font-size: 0.75rem; color: #64748b;">${timeStr}</span>
+              </div>
+              <div style="font-weight: 700; font-size: 0.875rem; color: #1e293b;">
+                ${item.changedBy || 'Panchayat Authority'}
+              </div>
+              <p style="font-size: 0.8125rem; color: #475569; margin-top: 0.25rem; line-height: 1.4;">
+                ${item.remarks || 'Status logged.'}
+              </p>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    async function handleStatusUpdate(e) {
+      e.preventDefault();
+      const btn = document.getElementById('btn-save');
+      const prevText = btn.textContent;
+
+      const newStatus = document.getElementById('status-select').value;
+      const adminRemark = document.getElementById('remarks-input').value.trim();
+      const assignedOfficer = document.getElementById('officer-input').value.trim();
+
+      if (!adminRemark) {
+        showToast('Please provide an administrative remark explaining this action.', 'error');
+        return;
+      }
+
+      btn.disabled = true;
+      btn.textContent = 'Saving Changes... ⏳';
+
+      try {
+        const res = await AdminAPI.patch(`/admin/complaints/${complaintId}`, {
+          status: newStatus,
+          adminRemark,
+          assignedOfficer
+        });
+
+        if (res.success) {
+          showToast('Grievance dossier updated successfully! Citizen can view updates live.', 'success');
+          // Reload updated complaint
+          await loadComplaint();
+        } else {
+          throw new Error(res.message || 'Update failed.');
+        }
+      } catch (err) {
+        showToast(err.message || 'Failed to update grievance.', 'error');
+      } finally {
+        btn.disabled = false;
+        btn.textContent = prevText;
+      }
+    }
+
+    loadComplaint();
+  </script>
+</body>
+</html>

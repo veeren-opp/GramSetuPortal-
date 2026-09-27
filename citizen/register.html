@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Citizen Registration — GramSetu</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+
+  <!-- Topbar -->
+  <div class="gov-topbar">
+    <div class="container">
+      <div>🇮🇳 Digital Gram Panchayat Platform • Citizen Registration</div>
+      <div>Helpline: <strong>1800-180-1551</strong></div>
+    </div>
+  </div>
+
+  <!-- Navbar -->
+  <nav class="navbar">
+    <div class="container nav-container">
+      <a href="index.html" class="brand">
+        <div class="brand-emblem">🏛️</div>
+        <div>
+          <div class="brand-title">Gram<span>Setu</span></div>
+          <div class="brand-subtitle">Citizen Registration</div>
+        </div>
+      </a>
+      <ul class="nav-menu" id="nav-menu">
+        <li><a href="index.html" class="nav-link">Home</a></li>
+        <li><a href="login.html" class="btn btn-secondary btn-sm">Sign In</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- Main Container -->
+  <main style="padding: 3rem 0; flex: 1;">
+    <div class="container container-narrow">
+      
+      <!-- STEP 1: REGISTRATION FORM -->
+      <div class="card" id="step-register-card">
+        <div class="card-header" style="text-align: center; display: block; border: none; padding-bottom: 0.5rem;">
+          <div style="font-size: 2.25rem; margin-bottom: 0.35rem;">📝</div>
+          <h2 style="font-size: 1.6rem;">Citizen Account Registration</h2>
+          <p style="color: var(--text-muted); font-size: 0.875rem;">
+            Join your local Gram Panchayat to lodge grievances and track ground resolutions.
+          </p>
+        </div>
+
+        <div id="alert-box" style="display: none; padding: 0.75rem 1rem; border-radius: var(--radius-sm); margin-bottom: 1.25rem; font-size: 0.875rem;"></div>
+
+        <form id="register-form" onsubmit="handleRegisterSubmit(event)">
+          
+          <div class="form-group">
+            <label class="form-label">Full Legal Name <span class="req">*</span></label>
+            <input type="text" id="reg-name" class="form-control" placeholder="e.g. Ramesh Kumar Sharma" required>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label">10-Digit Mobile Number <span class="req">*</span></label>
+              <div style="display: flex; gap: 0.5rem;">
+                <span style="display: flex; align-items: center; padding: 0 0.75rem; background: #f1f5f9; border: 1.5px solid #d1d5db; border-radius: var(--radius-sm); font-size: 0.875rem; font-weight: 700; color: #475569;">+91</span>
+                <input type="tel" id="reg-mobile" class="form-control" placeholder="9876543210" pattern="[0-9]{10}" maxlength="10" required>
+              </div>
+              <div style="font-size: 0.75rem; color: var(--text-muted); margin-top: 0.25rem;">OTP will be sent to this number for verification.</div>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label">Email Address <span style="color: var(--text-muted); font-weight: normal;">(Optional)</span></label>
+              <input type="email" id="reg-email" class="form-control" placeholder="ramesh@example.com">
+            </div>
+          </div>
+
+          <!-- Hierarchical Location Dropdowns -->
+          <div style="background: #f8fafc; border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 1.25rem; margin-bottom: 1.25rem;">
+            <div style="font-weight: 700; font-size: 0.875rem; color: #1e293b; margin-bottom: 0.75rem; display: flex; align-items: center; gap: 0.4rem;">
+              <span>📍</span> <span>Jurisdiction & Location Hierarchy:</span>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label class="form-label">1. State <span class="req">*</span></label>
+                <select id="sel-state" class="form-control" required onchange="onStateChange()">
+                  <option value="" disabled selected>-- Select State --</option>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label class="form-label">2. District <span class="req">*</span></label>
+                <select id="sel-district" class="form-control" required disabled onchange="onDistrictChange()">
+                  <option value="" disabled selected>-- Select District --</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label class="form-label">3. Taluka / Block <span class="req">*</span></label>
+                <select id="sel-taluka" class="form-control" required disabled onchange="onTalukaChange()">
+                  <option value="" disabled selected>-- Select Taluka --</option>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label class="form-label">4. Gram Panchayat / Region <span class="req">*</span></label>
+                <select id="sel-region" class="form-control" required disabled onchange="onRegionChange()">
+                  <option value="" disabled selected>-- Select Gram Panchayat --</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="form-group" style="margin-bottom: 0;">
+              <label class="form-label">5. Ward / Local Area <span class="req">*</span></label>
+              <select id="sel-ward" class="form-control" required disabled>
+                <option value="" disabled selected>-- Select Ward --</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label">Create Password <span class="req">*</span></label>
+              <input type="password" id="reg-pass" class="form-control" placeholder="Minimum 6 characters" minlength="6" required>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label">Confirm Password <span class="req">*</span></label>
+              <input type="password" id="reg-cpass" class="form-control" placeholder="Re-enter password" minlength="6" required>
+            </div>
+          </div>
+
+          <button type="submit" id="btn-register-submit" class="btn btn-primary btn-block btn-lg" style="margin-top: 1rem;">
+            Proceed to Mobile OTP Verification →
+          </button>
+
+        </form>
+
+        <div style="text-align: center; margin-top: 1.5rem; font-size: 0.875rem; border-top: 1px solid var(--border-color); padding-top: 1.25rem;">
+          Already registered? <a href="login.html" style="font-weight: 700;">Sign in to your account</a>
+        </div>
+      </div>
+
+      <!-- STEP 2: OTP VERIFICATION MODAL / VIEW (Inline) -->
+      <div class="card" id="step-otp-card" style="display: none; text-align: center;">
+        <div style="font-size: 3rem; margin-bottom: 0.5rem;">📲</div>
+        <h2 style="font-size: 1.6rem;">Verify Your Mobile Number</h2>
+        <p style="color: var(--text-muted); font-size: 0.9375rem; margin-top: 0.35rem;">
+          Enter the 6-digit verification code dispatched to<br>
+          <strong id="otp-phone-display" style="color: var(--text-main); font-size: 1.05rem;">+91 ••••••••••</strong>
+        </p>
+
+        <!-- Dev Mode Autofill Helper -->
+        <div id="dev-otp-pill" style="display: none; background: #f0fdf4; border: 1px dashed #86efac; border-radius: var(--radius-md); padding: 0.85rem; margin: 1.25rem 0; font-size: 0.8125rem;">
+          <div>🧪 <strong>Developer Testing Mode Active</strong></div>
+          <div style="margin-top: 0.25rem;">
+            Generated OTP: <code id="dev-otp-value" style="background: #fff; padding: 0.2rem 0.5rem; border-radius: 4px; font-weight: 800; font-size: 1.1rem; color: #166534; border: 1px solid #86efac;">------</code>
+            <button type="button" class="btn btn-secondary btn-sm" onclick="autofillDevOtp()" style="margin-left: 0.5rem; vertical-align: middle;">Auto-Fill</button>
+          </div>
+        </div>
+
+        <div id="otp-alert-box" style="display: none; padding: 0.75rem 1rem; border-radius: var(--radius-sm); margin: 1.25rem 0; font-size: 0.875rem;"></div>
+
+        <!-- 6 OTP input boxes -->
+        <form onsubmit="handleOtpSubmit(event)">
+          <div style="display: flex; justify-content: center; gap: 0.5rem; margin: 1.5rem 0;">
+            <input type="text" inputmode="numeric" maxlength="1" class="form-control" style="width: 48px; height: 56px; font-size: 1.5rem; text-align: center; font-weight: 800;" id="otp-1" autofocus>
+            <input type="text" inputmode="numeric" maxlength="1" class="form-control" style="width: 48px; height: 56px; font-size: 1.5rem; text-align: center; font-weight: 800;" id="otp-2">
+            <input type="text" inputmode="numeric" maxlength="1" class="form-control" style="width: 48px; height: 56px; font-size: 1.5rem; text-align: center; font-weight: 800;" id="otp-3">
+            <input type="text" inputmode="numeric" maxlength="1" class="form-control" style="width: 48px; height: 56px; font-size: 1.5rem; text-align: center; font-weight: 800;" id="otp-4">
+            <input type="text" inputmode="numeric" maxlength="1" class="form-control" style="width: 48px; height: 56px; font-size: 1.5rem; text-align: center; font-weight: 800;" id="otp-5">
+            <input type="text" inputmode="numeric" maxlength="1" class="form-control" style="width: 48px; height: 56px; font-size: 1.5rem; text-align: center; font-weight: 800;" id="otp-6">
+          </div>
+
+          <button type="submit" id="btn-verify-submit" class="btn btn-primary btn-block btn-lg">
+            Verify Mobile & Activate Account →
+          </button>
+        </form>
+
+        <div style="margin-top: 1.5rem; font-size: 0.875rem; color: var(--text-muted);">
+          Didn't receive the OTP? <br>
+          <button type="button" id="btn-resend-otp" onclick="resendOtp()" style="background: none; border: none; color: var(--primary); font-weight: 700; cursor: pointer; text-decoration: underline; margin-top: 0.25rem;">
+            Resend Code (<span id="cooldown-timer">45</span>s)
+          </button>
+        </div>
+      </div>
+
+    </div>
+  </main>
+
+  <script src="js/config.js"></script>
+  <script src="js/api.js"></script>
+  <script src="js/auth.js"></script>
+  <script>
+    CitizenAuth.redirectIfAuthenticated();
+
+    const alertBox = document.getElementById('alert-box');
+    const otpAlertBox = document.getElementById('otp-alert-box');
+
+    const showAlert = (box, msg, isError = true) => {
+      box.style.display = 'block';
+      box.style.backgroundColor = isError ? '#fef2f2' : '#f0fdf4';
+      box.style.color = isError ? '#991b1b' : '#166534';
+      box.style.border = `1px solid ${isError ? '#fecaca' : '#bbf7d0'}`;
+      box.textContent = msg;
+    };
+
+    // 1. Cascading Locations Hierarchy
+    async function loadStates() {
+      try {
+        const res = await GramSetuAPI.get('/locations/states');
+        if (res.success) {
+          const sel = document.getElementById('sel-state');
+          sel.innerHTML = '<option value="" disabled selected>-- Select State --</option>' +
+            res.states.map(s => `<option value="${s._id}">${s.name} (${s.code})</option>`).join('');
+        }
+      } catch (err) {
+        console.error('Failed to load states:', err);
+      }
+    }
+
+    async function onStateChange() {
+      const stateId = document.getElementById('sel-state').value;
+      const selDistrict = document.getElementById('sel-district');
+      selDistrict.disabled = true;
+      selDistrict.innerHTML = '<option value="" disabled selected>Loading districts...</option>';
+      resetDropdown('sel-taluka', 'Taluka');
+      resetDropdown('sel-region', 'Gram Panchayat');
+      resetDropdown('sel-ward', 'Ward');
+
+      try {
+        const res = await GramSetuAPI.get(`/locations/districts/${stateId}`);
+        if (res.success) {
+          selDistrict.innerHTML = '<option value="" disabled selected>-- Select District --</option>' +
+            res.districts.map(d => `<option value="${d._id}">${d.name}</option>`).join('');
+          selDistrict.disabled = false;
+        }
+      } catch (err) {
+        console.error(err);
+      }
+    }
+
+    async function onDistrictChange() {
+      const districtId = document.getElementById('sel-district').value;
+      const selTaluka = document.getElementById('sel-taluka');
+      selTaluka.disabled = true;
+      selTaluka.innerHTML = '<option value="" disabled selected>Loading talukas...</option>';
+      resetDropdown('sel-region', 'Gram Panchayat');
+      resetDropdown('sel-ward', 'Ward');
+
+      try {
+        const res = await GramSetuAPI.get(`/locations/talukas/${districtId}`);
+        if (res.success) {
+          selTaluka.innerHTML = '<option value="" disabled selected>-- Select Taluka --</option>' +
+            res.talukas.map(t => `<option value="${t._id}">${t.name}</option>`).join('');
+          selTaluka.disabled = false;
+        }
+      } catch (err) {
+        console.error(err);
+      }
+    }
+
+    async function onTalukaChange() {
+      const talukaId = document.getElementById('sel-taluka').value;
+      const selRegion = document.getElementById('sel-region');
+      selRegion.disabled = true;
+      selRegion.innerHTML = '<option value="" disabled selected>Loading Gram Panchayats...</option>';
+      resetDropdown('sel-ward', 'Ward');
+
+      try {
+        const res = await GramSetuAPI.get(`/locations/regions/${talukaId}`);
+        if (res.success) {
+          selRegion.innerHTML = '<option value="" disabled selected>-- Select Gram Panchayat --</option>' +
+            res.regions.map(r => `<option value="${r._id}">${r.name}</option>`).join('');
+          selRegion.disabled = false;
+        }
+      } catch (err) {
+        console.error(err);
+      }
+    }
+
+    async function onRegionChange() {
+      const regionId = document.getElementById('sel-region').value;
+      const selWard = document.getElementById('sel-ward');
+      selWard.disabled = true;
+      selWard.innerHTML = '<option value="" disabled selected>Loading wards...</option>';
+
+      try {
+        const res = await GramSetuAPI.get(`/locations/wards/${regionId}`);
+        if (res.success) {
+          selWard.innerHTML = '<option value="" disabled selected>-- Select Ward --</option>' +
+            res.wards.map(w => `<option value="${w._id}">${w.name}</option>`).join('');
+          selWard.disabled = false;
+        }
+      } catch (err) {
+        console.error(err);
+      }
+    }
+
+    function resetDropdown(id, name) {
+      const el = document.getElementById(id);
+      el.disabled = true;
+      el.innerHTML = `<option value="" disabled selected>-- Select ${name} --</option>`;
+    }
+
+    // 2. Registration Submission
+    let registeredMobile = '';
+    let currentDevOtp = '';
+
+    async function handleRegisterSubmit(e) {
+      e.preventDefault();
+      alertBox.style.display = 'none';
+
+      const name = document.getElementById('reg-name').value.trim();
+      const mobile = document.getElementById('reg-mobile').value.trim();
+      const email = document.getElementById('reg-email').value.trim();
+      const state = document.getElementById('sel-state').value;
+      const district = document.getElementById('sel-district').value;
+      const taluka = document.getElementById('sel-taluka').value;
+      const region = document.getElementById('sel-region').value;
+      const ward = document.getElementById('sel-ward').value;
+      const password = document.getElementById('reg-pass').value;
+      const confirmPassword = document.getElementById('reg-cpass').value;
+
+      if (!/^\d{10}$/.test(mobile)) {
+        showAlert(alertBox, 'Please enter a valid 10-digit Indian mobile number.');
+        return;
+      }
+
+      if (password !== confirmPassword) {
+        showAlert(alertBox, 'Passwords do not match. Please re-enter.');
+        return;
+      }
+
+      const submitBtn = document.getElementById('btn-register-submit');
+      submitBtn.disabled = true;
+      submitBtn.textContent = 'Registering & Generating OTP...';
+
+      try {
+        const payload = {
+          name,
+          mobile,
+          email,
+          password,
+          confirmPassword,
+          state,
+          district,
+          taluka,
+          region,
+          ward
+        };
+
+        const res = await GramSetuAPI.post('/auth/register', payload);
+
+        if (res.success) {
+          registeredMobile = mobile;
+          document.getElementById('otp-phone-display').textContent = `+91 ${mobile.slice(0, 5)} ${mobile.slice(5)}`;
+
+          if (res.devOtp) {
+            currentDevOtp = res.devOtp;
+            document.getElementById('dev-otp-value').textContent = res.devOtp;
+            document.getElementById('dev-otp-pill').style.display = 'block';
+          }
+
+          document.getElementById('step-register-card').style.display = 'none';
+          document.getElementById('step-otp-card').style.display = 'block';
+          startCooldownTimer();
+          showToast('OTP sent successfully!', 'success');
+          document.getElementById('otp-1').focus();
+        }
+      } catch (err) {
+        showAlert(alertBox, err.message || 'Registration failed. Please try again.');
+        submitBtn.disabled = false;
+        submitBtn.textContent = 'Proceed to Mobile OTP Verification →';
+      }
+    }
+
+    // 3. OTP Auto-Advance & Paste
+    const otpBoxes = [
+      document.getElementById('otp-1'),
+      document.getElementById('otp-2'),
+      document.getElementById('otp-3'),
+      document.getElementById('otp-4'),
+      document.getElementById('otp-5'),
+      document.getElementById('otp-6')
+    ];
+
+    otpBoxes.forEach((box, index) => {
+      box.addEventListener('input', (e) => {
+        const val = e.target.value.replace(/[^0-9]/g, '');
+        e.target.value = val;
+        if (val && index < 5) otpBoxes[index + 1].focus();
+      });
+
+      box.addEventListener('keydown', (e) => {
+        if (e.key === 'Backspace' && !box.value && index > 0) {
+          otpBoxes[index - 1].focus();
+        }
+      });
+
+      box.addEventListener('paste', (e) => {
+        e.preventDefault();
+        const pasted = (e.clipboardData || window.clipboardData).getData('text').trim();
+        const digits = pasted.replace(/[^0-9]/g, '').slice(0, 6);
+        digits.split('').forEach((d, i) => {
+          if (otpBoxes[i]) otpBoxes[i].value = d;
+        });
+        if (digits.length >= 6) otpBoxes[5].focus();
+      });
+    });
+
+    function autofillDevOtp() {
+      if (!currentDevOtp) return;
+      currentDevOtp.split('').forEach((d, i) => {
+        if (otpBoxes[i]) otpBoxes[i].value = d;
+      });
+      otpBoxes[5].focus();
+    }
+
+    // 4. Cooldown Timer
+    let countdown = 45;
+    let timerInterval = null;
+
+    function startCooldownTimer() {
+      countdown = 45;
+      const resendBtn = document.getElementById('btn-resend-otp');
+      const timerSpan = document.getElementById('cooldown-timer');
+      resendBtn.disabled = true;
+
+      clearInterval(timerInterval);
+      timerInterval = setInterval(() => {
+        countdown--;
+        timerSpan.textContent = countdown;
+        if (countdown <= 0) {
+          clearInterval(timerInterval);
+          resendBtn.disabled = false;
+          resendBtn.textContent = 'Resend OTP Now';
+        }
+      }, 1000);
+    }
+
+    async function resendOtp() {
+      if (countdown > 0) return;
+      const resendBtn = document.getElementById('btn-resend-otp');
+      resendBtn.disabled = true;
+      resendBtn.textContent = 'Dispatching OTP...';
+
+      try {
+        const res = await GramSetuAPI.post('/auth/send-otp', { mobile: registeredMobile });
+        if (res.devOtp) {
+          currentDevOtp = res.devOtp;
+          document.getElementById('dev-otp-value').textContent = res.devOtp;
+          document.getElementById('dev-otp-pill').style.display = 'block';
+        }
+        showToast('New OTP dispatched!', 'success');
+        resendBtn.innerHTML = 'Resend Code (<span id="cooldown-timer">45</span>s)';
+        startCooldownTimer();
+      } catch (err) {
+        showToast(err.message || 'Failed to resend OTP.', 'error');
+        resendBtn.disabled = false;
+        resendBtn.textContent = 'Resend OTP Now';
+      }
+    }
+
+    // 5. Submit OTP
+    async function handleOtpSubmit(e) {
+      e.preventDefault();
+      otpAlertBox.style.display = 'none';
+
+      const enteredOtp = otpBoxes.map(b => b.value.trim()).join('');
+      if (enteredOtp.length !== 6) {
+        showAlert(otpAlertBox, 'Please enter all 6 digits of the verification code.');
+        return;
+      }
+
+      const verifyBtn = document.getElementById('btn-verify-submit');
+      verifyBtn.disabled = true;
+      verifyBtn.textContent = 'Verifying Authenticity...';
+
+      try {
+        const res = await GramSetuAPI.post('/auth/verify-otp', {
+          mobile: registeredMobile,
+          otp: enteredOtp
+        });
+
+        if (res.success) {
+          CitizenAuth.setSession(res.token, res.user);
+          showToast('Account activated successfully! Redirecting to Dashboard...', 'success');
+          setTimeout(() => {
+            window.location.href = 'dashboard.html';
+          }, 800);
+        }
+      } catch (err) {
+        showAlert(otpAlertBox, err.message || 'OTP verification failed. Check the code and retry.');
+        verifyBtn.disabled = false;
+        verifyBtn.textContent = 'Verify Mobile & Activate Account →';
+      }
+    }
+
+    // Load initial states
+    loadStates();
+  </script>
+</body>
+</html>

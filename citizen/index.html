@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>GramSetu — Digital Gram Panchayat Grievance Platform</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+
+  <!-- Official Topbar -->
+  <div class="gov-topbar">
+    <div class="container">
+      <div>🇮🇳 Digital Gram Panchayat Platform • Ministry of Panchayati Raj Initiative</div>
+      <div>Emergency Services: <strong>112</strong> | Civic Redressal Helpline: <strong>1800-180-1551</strong></div>
+    </div>
+  </div>
+
+  <!-- Navbar -->
+  <nav class="navbar">
+    <div class="container nav-container">
+      <a href="index.html" class="brand">
+        <div class="brand-emblem">🏛️</div>
+        <div>
+          <div class="brand-title">Gram<span>Setu</span></div>
+          <div class="brand-subtitle">Civic Grievance Platform</div>
+        </div>
+      </a>
+
+      <ul class="nav-menu" id="nav-menu">
+        <li><a href="index.html" class="nav-link active">Home</a></li>
+        <li><a href="#services" class="nav-link">Services</a></li>
+        <li><a href="#about" class="nav-link">About</a></li>
+        <li><a href="#help" class="nav-link">Help</a></li>
+        <li><a href="login.html" class="nav-link">Login</a></li>
+        <li><a href="register.html" class="btn btn-primary btn-sm">Register</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- Hero Section -->
+  <header class="hero">
+    <div class="container">
+      <div style="display: inline-block; background: rgba(255, 255, 255, 0.2); padding: 0.35rem 1rem; border-radius: 9999px; font-size: 0.875rem; font-weight: 600; margin-bottom: 1.25rem;">
+        Direct Digital Citizen-to-Panchayat Redressal
+      </div>
+      <h1>Your Voice. Your Village. Your GramSetu.</h1>
+      <p>Report local civic infrastructure defects, drinking water disruptions, and sanitation issues directly to your Gram Panchayat and track their ground resolution in real time.</p>
+      <div style="display: flex; justify-content: center; gap: 1rem; flex-wrap: wrap;">
+        <a href="submit-complaint.html" class="btn btn-accent btn-lg">📢 Report a Grievance</a>
+        <a href="login.html" class="btn btn-secondary btn-lg">🔐 Login to Account</a>
+      </div>
+    </div>
+  </header>
+
+  <!-- 4-Step Process Section -->
+  <section style="padding: 4.5rem 0; background: #ffffff;">
+    <div class="container">
+      <div style="text-align: center; max-width: 680px; margin: 0 auto 3rem auto;">
+        <span style="color: var(--primary); font-weight: 700; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.05em;">Transparent Redressal</span>
+        <h2 style="font-size: 2rem; margin-top: 0.35rem;">How GramSetu Operates</h2>
+        <p style="color: var(--text-muted); margin-top: 0.5rem;">A direct, cloud-connected pipeline connecting rural citizens with their designated Panchayat Development Officers.</p>
+      </div>
+
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1.5rem;">
+        <div class="card" style="text-align: center; border-top: 4px solid var(--primary); margin: 0;">
+          <div style="font-size: 2.25rem; margin-bottom: 0.75rem;">📸</div>
+          <h3 style="font-size: 1.15rem; margin-bottom: 0.35rem;">1. Capture & Report</h3>
+          <p style="font-size: 0.875rem; color: var(--text-muted);">Snap a photo using your mobile camera, describe the issue, and submit from anywhere.</p>
+        </div>
+
+        <div class="card" style="text-align: center; border-top: 4px solid var(--accent); margin: 0;">
+          <div style="font-size: 2.25rem; margin-bottom: 0.75rem;">📍</div>
+          <h3 style="font-size: 1.15rem; margin-bottom: 0.35rem;">2. Auto-Route by Region</h3>
+          <p style="font-size: 0.875rem; color: var(--text-muted);">The backend automatically routes your grievance strictly to your Gram Panchayat administration.</p>
+        </div>
+
+        <div class="card" style="text-align: center; border-top: 4px solid #7c3aed; margin: 0;">
+          <div style="font-size: 2.25rem; margin-bottom: 0.75rem;">👷‍♂️</div>
+          <h3 style="font-size: 1.15rem; margin-bottom: 0.35rem;">3. Official Inspection</h3>
+          <p style="font-size: 0.875rem; color: var(--text-muted);">Designated field officers review photographic evidence and dispatch maintenance crews.</p>
+        </div>
+
+        <div class="card" style="text-align: center; border-top: 4px solid #16a34a; margin: 0;">
+          <div style="font-size: 2.25rem; margin-bottom: 0.75rem;">✅</div>
+          <h3 style="font-size: 1.15rem; margin-bottom: 0.35rem;">4. Verified Resolution</h3>
+          <p style="font-size: 0.875rem; color: var(--text-muted);">Receive real-time timeline updates and official officer remarks once the defect is repaired.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Covered Civic Services -->
+  <section id="services" style="padding: 4.5rem 0; background: #f8fafc; border-top: 1px solid var(--border-color);">
+    <div class="container">
+      <div style="text-align: center; max-width: 680px; margin: 0 auto 3rem auto;">
+        <span style="color: var(--primary); font-weight: 700; font-size: 0.85rem; text-transform: uppercase;">Public Utilities</span>
+        <h2 style="font-size: 2rem; margin-top: 0.35rem;">Supported Civic Services</h2>
+        <p style="color: var(--text-muted);">Report any public defect across all essential village service domains.</p>
+      </div>
+
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1.25rem;">
+        
+        <div style="background: #fff; padding: 1.25rem; border-radius: var(--radius-md); border: 1px solid var(--border-color); display: flex; gap: 0.85rem;">
+          <div style="font-size: 2rem;">🛣️</div>
+          <div>
+            <h4 style="font-size: 1rem; margin-bottom: 0.25rem;">Roads</h4>
+            <p style="font-size: 0.8125rem; color: var(--text-muted);">Potholes, broken asphalt, culvert slab collapses, and tractor route damage.</p>
+          </div>
+        </div>
+
+        <div style="background: #fff; padding: 1.25rem; border-radius: var(--radius-md); border: 1px solid var(--border-color); display: flex; gap: 0.85rem;">
+          <div style="font-size: 2rem;">💡</div>
+          <div>
+            <h4 style="font-size: 1rem; margin-bottom: 0.25rem;">Street Lights</h4>
+            <p style="font-size: 0.8125rem; color: var(--text-muted);">Defective solar lamps, short-circuited pole wiring, and unlit village lanes.</p>
+          </div>
+        </div>
+
+        <div style="background: #fff; padding: 1.25rem; border-radius: var(--radius-md); border: 1px solid var(--border-color); display: flex; gap: 0.85rem;">
+          <div style="font-size: 2rem;">🚰</div>
+          <div>
+            <h4 style="font-size: 1rem; margin-bottom: 0.25rem;">Water Supply</h4>
+            <p style="font-size: 0.8125rem; color: var(--text-muted);">Main pipe ruptures, dry borewells, handpump breakdowns, and contamination.</p>
+          </div>
+        </div>
+
+        <div style="background: #fff; padding: 1.25rem; border-radius: var(--radius-md); border: 1px solid var(--border-color); display: flex; gap: 0.85rem;">
+          <div style="font-size: 2rem;">🧼</div>
+          <div>
+            <h4 style="font-size: 1rem; margin-bottom: 0.25rem;">Sanitation</h4>
+            <p style="font-size: 0.8125rem; color: var(--text-muted);">Community toilet hygiene, stagnant water spraying, and disinfection drives.</p>
+          </div>
+        </div>
+
+        <div style="background: #fff; padding: 1.25rem; border-radius: var(--radius-md); border: 1px solid var(--border-color); display: flex; gap: 0.85rem;">
+          <div style="font-size: 2rem;">🌊</div>
+          <div>
+            <h4 style="font-size: 1rem; margin-bottom: 0.25rem;">Drainage</h4>
+            <p style="font-size: 0.8125rem; color: var(--text-muted);">Blocked open stormwater gutters, silt accumulation, and sewage backflow.</p>
+          </div>
+        </div>
+
+        <div style="background: #fff; padding: 1.25rem; border-radius: var(--radius-md); border: 1px solid var(--border-color); display: flex; gap: 0.85rem;">
+          <div style="font-size: 2rem;">♻️</div>
+          <div>
+            <h4 style="font-size: 1rem; margin-bottom: 0.25rem;">Waste Management</h4>
+            <p style="font-size: 0.8125rem; color: var(--text-muted);">Overflowing garbage collection points and delayed refuse tipper collection.</p>
+          </div>
+        </div>
+
+        <div style="background: #fff; padding: 1.25rem; border-radius: var(--radius-md); border: 1px solid var(--border-color); display: flex; gap: 0.85rem;">
+          <div style="font-size: 2rem;">⚡</div>
+          <div>
+            <h4 style="font-size: 1rem; margin-bottom: 0.25rem;">Electricity</h4>
+            <p style="font-size: 0.8125rem; color: var(--text-muted);">Hanging low-tension power cables and damaged agricultural feeder transformers.</p>
+          </div>
+        </div>
+
+        <div style="background: #fff; padding: 1.25rem; border-radius: var(--radius-md); border: 1px solid var(--border-color); display: flex; gap: 0.85rem;">
+          <div style="font-size: 2rem;">🏫</div>
+          <div>
+            <h4 style="font-size: 1rem; margin-bottom: 0.25rem;">Public Infrastructure</h4>
+            <p style="font-size: 0.8125rem; color: var(--text-muted);">Primary health sub-center repairs, Anganwadi building maintenance, and community halls.</p>
+          </div>
+        </div>
+
+        <div style="background: #fff; padding: 1.25rem; border-radius: var(--radius-md); border: 1px solid var(--border-color); display: flex; gap: 0.85rem;">
+          <div style="font-size: 2rem;">📋</div>
+          <div>
+            <h4 style="font-size: 1rem; margin-bottom: 0.25rem;">Other</h4>
+            <p style="font-size: 0.8125rem; color: var(--text-muted);">Any civic grievance that falls within the jurisdiction of the Gram Panchayat.</p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- About Section -->
+  <section id="about" style="padding: 4.5rem 0; background: #ffffff;">
+    <div class="container container-narrow" style="text-align: center;">
+      <span style="color: var(--primary); font-weight: 700; font-size: 0.85rem; text-transform: uppercase;">About GramSetu</span>
+      <h2 style="font-size: 2rem; margin: 0.5rem 0 1rem 0;">Bridging Villages with Transparent Governance</h2>
+      <p style="color: var(--text-muted); font-size: 1rem; line-height: 1.7; margin-bottom: 1.5rem;">
+        GramSetu is an open digital platform developed to eliminate bureaucratic delays in rural grievance resolution. By combining mobile photography, GPS validation, and regional database isolation, citizens directly empower Panchayat Development Officers with verified on-ground intelligence.
+      </p>
+      <div style="display: flex; justify-content: center; gap: 1rem;">
+        <a href="register.html" class="btn btn-primary">Join Your Gram Panchayat</a>
+        <a href="../admin/index.html" class="btn btn-secondary">Regional Admin Console ↗</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Help Section -->
+  <section id="help" style="padding: 3.5rem 0; background: #f0fdf4; border-top: 1px solid #bbf7d0;">
+    <div class="container container-narrow" style="text-align: center;">
+      <h3 style="font-size: 1.5rem; color: #166534; margin-bottom: 0.5rem;">Need Assistance with Filing?</h3>
+      <p style="color: #14532d; font-size: 0.9375rem; margin-bottom: 1.25rem;">
+        If you encounter difficulties capturing photographs or selecting your Gram Panchayat, our toll-free support line is available Monday through Saturday.
+      </p>
+      <div style="display: inline-block; background: #fff; padding: 0.75rem 1.5rem; border-radius: var(--radius-md); font-weight: 700; color: #166534; border: 1px solid #86efac;">
+        📞 Toll-Free Citizen Helpline: 1800-180-1551 (9 AM - 6 PM)
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <div class="container">
+      <div class="footer-grid">
+        <div>
+          <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.75rem;">
+            <span style="font-size: 1.5rem;">🏛️</span>
+            <strong style="color: #fff; font-size: 1.2rem;">GramSetu Civic Portal</strong>
+          </div>
+          <p style="font-size: 0.85rem; line-height: 1.6; max-width: 400px;">
+            Connecting rural residents with Block Development Officers and Panchayat Development Officers for accountable, transparent village governance.
+          </p>
+        </div>
+        <div>
+          <h4 style="color: #fff; font-size: 0.95rem; margin-bottom: 0.75rem;">Quick Links</h4>
+          <ul style="list-style: none; font-size: 0.85rem; line-height: 2;">
+            <li><a href="index.html" style="color: #94a3b8;">Home</a></li>
+            <li><a href="submit-complaint.html" style="color: #94a3b8;">Report a Grievance</a></li>
+            <li><a href="login.html" style="color: #94a3b8;">Citizen Login</a></li>
+            <li><a href="register.html" style="color: #94a3b8;">Citizen Registration</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4 style="color: #fff; font-size: 0.95rem; margin-bottom: 0.75rem;">Administration</h4>
+          <ul style="list-style: none; font-size: 0.85rem; line-height: 2;">
+            <li><a href="../admin/index.html" style="color: #94a3b8;">Regional Admin Portal ↗</a></li>
+            <li><a href="#about" style="color: #94a3b8;">Citizen Charter</a></li>
+            <li><a href="#help" style="color: #94a3b8;">Right to Information (RTI)</a></li>
+          </ul>
+        </div>
+      </div>
+      <div style="border-top: 1px solid #1e293b; padding-top: 1.5rem; text-align: center;">
+        © 2026 GramSetu Digital Village Grievance Redressal Platform. Open-source e-governance under MIT.
+      </div>
+    </div>
+  </footer>
+
+  <script src="js/config.js"></script>
+  <script src="js/api.js"></script>
+  <script src="js/auth.js"></script>
+</body>
+</html>

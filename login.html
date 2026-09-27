@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login | GramSetu — Digital Gram Panchayat Portal</title>
+  <meta name="description" content="Sign in to GramSetu digital village portal. Access citizen grievance redressal or Panchayat official action center.">
+  
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,500;0,600;0,700;1,500&family=Hind:wght@400;500;600;700&display=swap" rel="stylesheet">
+  
+  <!-- Stylesheet -->
+  <link rel="stylesheet" href="css/style.css">
+  
+  <style>
+    .auth-page {
+      min-height: calc(100vh - 140px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 2.5rem 1rem;
+    }
+    .auth-shell {
+      max-width: 920px;
+      width: 100%;
+      background: var(--paper);
+      border: 1px solid var(--border-soil);
+      border-radius: var(--radius-md);
+      overflow: hidden;
+      display: grid;
+      grid-template-columns: 0.9fr 1.1fr;
+      box-shadow: var(--shadow-lg);
+    }
+    .auth-context {
+      background: var(--primary-900);
+      color: #EFE8D6;
+      padding: 2.5rem 2.2rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+    .auth-quote {
+      font-family: var(--serif);
+      font-style: italic;
+      font-size: 1.25rem;
+      line-height: 1.5;
+      color: #F4EFDD;
+    }
+    .auth-quote-attr {
+      margin-top: 0.8rem;
+      font-size: 0.8rem;
+      color: #B7AD8E;
+    }
+    .auth-context-list {
+      margin-top: 2rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+    .auth-context-item {
+      display: flex;
+      gap: 0.6rem;
+      font-size: 0.86rem;
+      color: #D8CFAE;
+      line-height: 1.45;
+    }
+    .auth-form-panel {
+      padding: 2.4rem 2.2rem;
+      background: var(--paper);
+    }
+    .role-toggle {
+      display: flex;
+      background: var(--primary-100);
+      border: 1px solid var(--border-soil);
+      border-radius: var(--radius-full);
+      padding: 0.25rem;
+      margin-bottom: 1.6rem;
+    }
+    .role-btn {
+      flex: 1;
+      text-align: center;
+      padding: 0.5rem 0.75rem;
+      border: none;
+      background: transparent;
+      border-radius: var(--radius-full);
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      cursor: pointer;
+      transition: var(--transition);
+    }
+    .role-btn.active {
+      background: var(--paper);
+      color: var(--primary-900);
+      box-shadow: 0 1px 3px rgba(22,48,31,0.15);
+    }
+    .password-wrap {
+      position: relative;
+    }
+    .password-wrap .form-control {
+      padding-right: 3.8rem;
+    }
+    .toggle-pass {
+      position: absolute;
+      right: 0.75rem;
+      top: 50%;
+      transform: translateY(-50%);
+      background: none;
+      border: none;
+      font-size: 0.8rem;
+      font-weight: 700;
+      color: var(--primary-700);
+      cursor: pointer;
+      padding: 0.2rem 0.4rem;
+    }
+    .demo-creds-box {
+      margin-top: 1.5rem;
+      background: var(--cream-bg);
+      border: 1px solid var(--border-soil);
+      border-radius: var(--radius-sm);
+      padding: 0.9rem 1rem;
+    }
+    .demo-creds-title {
+      font-size: 0.78rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      color: var(--accent-ochre-dark);
+      margin-bottom: 0.5rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .demo-pills {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.6rem;
+    }
+    .demo-pill-btn {
+      background: var(--paper);
+      border: 1px solid var(--border-soil);
+      border-radius: var(--radius-xs);
+      padding: 0.5rem 0.65rem;
+      text-align: left;
+      cursor: pointer;
+      transition: var(--transition);
+      font-size: 0.76rem;
+    }
+    .demo-pill-btn:hover {
+      border-color: var(--primary-500);
+      background: var(--primary-50);
+    }
+    .demo-pill-btn strong {
+      display: block;
+      color: var(--primary-900);
+      font-size: 0.8rem;
+    }
+    .demo-pill-btn span {
+      display: block;
+      color: var(--text-muted);
+      margin-top: 0.1rem;
+    }
+    @media (max-width: 768px) {
+      .auth-shell {
+        grid-template-columns: 1fr;
+      }
+      .auth-context {
+        display: none;
+      }
+      .auth-form-panel {
+        padding: 1.8rem 1.4rem;
+      }
+      .demo-pills {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Top Government Strip -->
+  <div class="top-gov-strip">
+    <div class="wrap">
+      <div class="top-gov-info">
+        <span>🏛️ Department of Panchayati Raj • Government of Maharashtra</span>
+        <span class="panchayat-pill">Sundarpur Gram Panchayat</span>
+      </div>
+      <div class="top-gov-right">
+        <a href="index.html" style="color:#EFE8D6; text-decoration:none;">← Back to Home</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Header -->
+  <header class="site-header">
+    <div class="wrap">
+      <a href="index.html" class="brand">
+        <div class="brand-emblem">🌾</div>
+        <div class="brand-title">
+          <span class="brand-name">GramSetu <small>Official Authentication Gateway</small></span>
+        </div>
+      </a>
+      <div>
+        <a href="index.html" class="btn btn-outline btn-sm">← Back to Portal</a>
+      </div>
+    </div>
+  </header>
+
+  <!-- Login Main -->
+  <main class="auth-page">
+    <div class="auth-shell">
+
+      <!-- Left context panel -->
+      <div class="auth-context">
+        <div>
+          <p class="auth-quote">
+            "A complaint filed today should be a verified repair tomorrow — and a public record every villager can inspect."
+          </p>
+          <p class="auth-quote-attr">
+            — GramSetu Smart Governance Manifesto
+          </p>
+        </div>
+
+        <div class="auth-context-list">
+          <div class="auth-context-item">
+            <span>📷</span>
+            <span>Every citizen complaint carries actual photographic proof and a unique tracking ID.</span>
+          </div>
+          <div class="auth-context-item">
+            <span>🔑</span>
+            <span>Panchayat officials review evidence, assign staff, and post official progress remarks.</span>
+          </div>
+          <div class="auth-context-item">
+            <span>📊</span>
+            <span>Development project funds, contractors, and progress bars remain 100% transparent.</span>
+          </div>
+        </div>
+
+        <div style="font-size: 0.76rem; color: #B7AD8E; border-top: 1px solid rgba(239, 232, 214, 0.2); padding-top: 1rem;">
+          College Capstone Project • Pure Client-Side HTML/CSS/JS
+        </div>
+      </div>
+
+      <!-- Right Form Panel -->
+      <div class="auth-form-panel">
+        
+        <!-- Role Toggle Selector -->
+        <div class="role-toggle">
+          <button type="button" class="role-btn active" id="btnRoleCitizen" onclick="selectRole('citizen')">
+            🧑‍🌾 Citizen Login
+          </button>
+          <button type="button" class="role-btn" id="btnRoleAdmin" onclick="selectRole('admin')">
+            🔑 Panchayat Admin
+          </button>
+        </div>
+
+        <div>
+          <h2 id="loginHeading" style="font-size: 1.45rem; margin-bottom: 0.35rem; color: var(--primary-900);">
+            Sign in to File or Track Grievance
+          </h2>
+          <p id="loginSub" style="font-size: 0.86rem; color: var(--text-muted); margin-bottom: 1.4rem;">
+            Enter your registered email address and password.
+          </p>
+
+          <form id="loginForm" novalidate>
+            <!-- Email -->
+            <div class="form-group">
+              <label for="loginEmail">Email Address <span class="req">*</span></label>
+              <input type="email" id="loginEmail" class="form-control" placeholder="e.g. citizen@gramsetu.com" required autocomplete="email">
+              <span class="form-error-msg" id="emailError"></span>
+            </div>
+
+            <!-- Password -->
+            <div class="form-group">
+              <label for="loginPassword">Password <span class="req">*</span></label>
+              <div class="password-wrap">
+                <input type="password" id="loginPassword" class="form-control" placeholder="Enter your account password" required autocomplete="current-password">
+                <button type="button" class="toggle-pass" id="btnTogglePass" onclick="togglePasswordVisibility()">Show</button>
+              </div>
+              <span class="form-error-msg" id="passError"></span>
+            </div>
+
+            <!-- Remember & Forgot -->
+            <div style="display: flex; justify-content: space-between; align-items: center; font-size: 0.82rem; margin-bottom: 1.25rem;">
+              <label style="display: flex; align-items: center; gap: 0.4rem; cursor: pointer; color: var(--text-muted);">
+                <input type="checkbox" id="rememberMe" checked> Remember session
+              </label>
+              <a href="javascript:void(0)" onclick="handleForgotPassword()" style="color: var(--primary-700); font-weight: 600;">
+                Forgot Password?
+              </a>
+            </div>
+
+            <!-- Submit Button with Loading State -->
+            <button type="submit" class="btn btn-primary btn-block btn-lg" id="btnLoginSubmit">
+              <span id="btnSubmitText">Log in to Portal</span>
+            </button>
+          </form>
+
+          <!-- 1-Click Demo Credentials Quick Fill Box -->
+          <div class="demo-creds-box">
+            <div class="demo-creds-title">
+              <span>⚡ One-Click Demo Credentials (Viva Testing)</span>
+            </div>
+            <div class="demo-pills">
+              <button type="button" class="demo-pill-btn" onclick="quickFillDemo('citizen')">
+                <strong>🧑‍🌾 Citizen Demo</strong>
+                <span>citizen@gramsetu.com</span>
+                <span style="font-family: monospace; font-size: 0.72rem; color: var(--primary-700);">Pass: citizen123</span>
+              </button>
+              <button type="button" class="demo-pill-btn" onclick="quickFillDemo('admin')">
+                <strong>🔑 Panchayat Admin</strong>
+                <span>admin@gramsetu.com</span>
+                <span style="font-family: monospace; font-size: 0.72rem; color: var(--accent-ochre-dark);">Pass: admin123</span>
+              </button>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="site-footer" style="margin-top:0; padding:1.5rem 0;">
+    <div class="wrap" style="text-align: center; font-size: 0.78rem; color: var(--text-muted);">
+      © 2026 Sundarpur Gram Panchayat • GramSetu Digital Village Portal
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="js/app.js"></script>
+  <script src="js/auth.js"></script>
+  <script>
+    let activeRole = 'citizen';
+
+    document.addEventListener('DOMContentLoaded', () => {
+      // If already logged in, redirect to respective dashboard
+      Auth.redirectIfLoggedIn();
+
+      const form = document.getElementById('loginForm');
+      if (form) {
+        form.addEventListener('submit', handleLoginSubmit);
+      }
+    });
+
+    function selectRole(role) {
+      activeRole = role;
+      document.getElementById('btnRoleCitizen').classList.toggle('active', role === 'citizen');
+      document.getElementById('btnRoleAdmin').classList.toggle('active', role === 'admin');
+
+      const heading = document.getElementById('loginHeading');
+      const sub = document.getElementById('loginSub');
+      const submitText = document.getElementById('btnSubmitText');
+
+      if (role === 'admin') {
+        heading.textContent = 'Panchayat Official Sign-in';
+        sub.textContent = 'Enter administrative credentials to open the Action Center.';
+        submitText.textContent = 'Access Panchayat Action Center';
+      } else {
+        heading.textContent = 'Sign in to File or Track Grievance';
+        sub.textContent = 'Enter your citizen credentials to view and submit complaints.';
+        submitText.textContent = 'Log in to Citizen Portal';
+      }
+    }
+
+    function togglePasswordVisibility() {
+      const passInput = document.getElementById('loginPassword');
+      const btn = document.getElementById('btnTogglePass');
+      if (passInput.type === 'password') {
+        passInput.type = 'text';
+        btn.textContent = 'Hide';
+      } else {
+        passInput.type = 'password';
+        btn.textContent = 'Show';
+      }
+    }
+
+    function quickFillDemo(role) {
+      selectRole(role);
+      const emailInput = document.getElementById('loginEmail');
+      const passInput = document.getElementById('loginPassword');
+
+      if (role === 'admin') {
+        emailInput.value = 'admin@gramsetu.com';
+        passInput.value = 'admin123';
+      } else {
+        emailInput.value = 'citizen@gramsetu.com';
+        passInput.value = 'citizen123';
+      }
+
+      showToast(`Filled ${role} demo credentials. Click Login!`, 'info', 2000);
+    }
+
+    function handleLoginSubmit(e) {
+      e.preventDefault();
+
+      const emailInput = document.getElementById('loginEmail');
+      const passInput = document.getElementById('loginPassword');
+      const emailErr = document.getElementById('emailError');
+      const passErr = document.getElementById('passError');
+      const submitBtn = document.getElementById('btnLoginSubmit');
+      const submitText = document.getElementById('btnSubmitText');
+
+      emailErr.textContent = '';
+      passErr.textContent = '';
+      emailInput.classList.remove('is-invalid');
+      passInput.classList.remove('is-invalid');
+
+      const email = emailInput.value.trim();
+      const password = passInput.value.trim();
+
+      let hasError = false;
+      if (!email) {
+        emailErr.textContent = 'Email address is required.';
+        emailInput.classList.add('is-invalid');
+        hasError = true;
+      } else if (!email.includes('@')) {
+        emailErr.textContent = 'Please enter a valid email format (e.g. citizen@gramsetu.com).';
+        emailInput.classList.add('is-invalid');
+        hasError = true;
+      }
+
+      if (!password) {
+        passErr.textContent = 'Password is required.';
+        passInput.classList.add('is-invalid');
+        hasError = true;
+      }
+
+      if (hasError) return;
+
+      // Loading state
+      submitBtn.disabled = true;
+      submitText.textContent = 'Verifying credentials...';
+
+      setTimeout(() => {
+        const result = Auth.login(email, password, activeRole);
+
+        if (!result.success) {
+          submitBtn.disabled = false;
+          submitText.textContent = activeRole === 'admin' ? 'Access Panchayat Action Center' : 'Log in to Citizen Portal';
+          showToast(result.message, 'error');
+          passErr.textContent = result.message;
+          passInput.classList.add('is-invalid');
+          return;
+        }
+
+        showToast(`Welcome back, ${result.user.name}! Redirecting...`, 'success');
+
+        // Redirect based on role
+        setTimeout(() => {
+          if (result.user.role === 'admin') {
+            window.location.href = 'admin.html';
+          } else {
+            window.location.href = 'citizen.html';
+          }
+        }, 500);
+      }, 350);
+    }
+
+    function handleForgotPassword() {
+      showToast('For demo testing, please use the quick-fill credentials below.', 'info');
+    }
+  </script>
+</body>
+</html>

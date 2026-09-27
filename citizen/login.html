@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Citizen Sign In — GramSetu</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+
+  <!-- Topbar -->
+  <div class="gov-topbar">
+    <div class="container">
+      <div>🇮🇳 Digital Gram Panchayat Platform • Citizen Sign In</div>
+      <div>Helpline: <strong>1800-180-1551</strong></div>
+    </div>
+  </div>
+
+  <!-- Navbar -->
+  <nav class="navbar">
+    <div class="container nav-container">
+      <a href="index.html" class="brand">
+        <div class="brand-emblem">🏛️</div>
+        <div>
+          <div class="brand-title">Gram<span>Setu</span></div>
+          <div class="brand-subtitle">Citizen Portal</div>
+        </div>
+      </a>
+      <ul class="nav-menu" id="nav-menu">
+        <li><a href="index.html" class="nav-link">Home</a></li>
+        <li><a href="register.html" class="btn btn-primary btn-sm">Register</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- Login Main -->
+  <main style="padding: 3.5rem 0; flex: 1;">
+    <div class="container container-narrow" style="max-width: 480px;">
+      
+      <div class="card">
+        <div class="card-header" style="text-align: center; display: block; border: none; padding-bottom: 0.5rem;">
+          <div style="font-size: 2.25rem; margin-bottom: 0.35rem;">🔐</div>
+          <h2 style="font-size: 1.6rem;">Citizen Account Sign In</h2>
+          <p style="color: var(--text-muted); font-size: 0.875rem;">
+            Access your grievance dashboard, track submitted complaints, and view officer notes.
+          </p>
+        </div>
+
+        <!-- Quick Demo Fill -->
+        <div style="background: #f0fdf4; border: 1px dashed #86efac; border-radius: var(--radius-md); padding: 0.85rem; margin-bottom: 1.25rem; font-size: 0.8125rem;">
+          <div style="font-weight: 700; color: #166534; margin-bottom: 0.4rem;">⚡ 1-Click Demo Citizen Login:</div>
+          <div style="display: flex; flex-direction: column; gap: 0.4rem;">
+            <button type="button" class="btn btn-secondary btn-sm" style="width: 100%; text-align: left; justify-content: space-between;" onclick="autofillDemo('rajesh')">
+              <span>👤 <strong>Rajesh Kumar</strong> (Rampur GP)</span>
+              <span style="font-family: monospace; color: #15803d;">9876543210</span>
+            </button>
+            <button type="button" class="btn btn-secondary btn-sm" style="width: 100%; text-align: left; justify-content: space-between;" onclick="autofillDemo('sunita')">
+              <span>👤 <strong>Sunita Devi</strong> (Khed Shivapur GP)</span>
+              <span style="font-family: monospace; color: #15803d;">9876543211</span>
+            </button>
+          </div>
+          <div style="font-size: 0.72rem; color: #166534; margin-top: 0.4rem; text-align: center;">
+            Password: <strong>password123</strong> (or <strong>Citizen@123</strong>)
+          </div>
+        </div>
+
+        <div id="alert-box" style="display: none; padding: 0.75rem 1rem; border-radius: var(--radius-sm); margin-bottom: 1.25rem; font-size: 0.875rem;"></div>
+
+        <form onsubmit="handleLoginSubmit(event)">
+          <div class="form-group">
+            <label class="form-label">10-Digit Mobile Number <span class="req">*</span></label>
+            <div style="display: flex; gap: 0.5rem;">
+              <span style="display: flex; align-items: center; padding: 0 0.75rem; background: #f1f5f9; border: 1.5px solid #d1d5db; border-radius: var(--radius-sm); font-size: 0.875rem; font-weight: 700; color: #475569;">+91</span>
+              <input type="tel" id="login-mobile" class="form-control" placeholder="9876543210" pattern="[0-9]{10}" maxlength="10" required>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Password <span class="req">*</span></label>
+            <input type="password" id="login-password" class="form-control" placeholder="Enter your password" required>
+          </div>
+
+          <button type="submit" id="btn-login-submit" class="btn btn-primary btn-block btn-lg" style="margin-top: 1.25rem;">
+            Sign In to Dashboard →
+          </button>
+        </form>
+
+        <div style="text-align: center; margin-top: 1.5rem; font-size: 0.875rem; border-top: 1px solid var(--border-color); padding-top: 1.25rem;">
+          Don't have a verified account yet? <a href="register.html" style="font-weight: 700;">Register as a Citizen</a>
+          <div style="margin-top: 0.75rem;">
+            <a href="../admin/index.html" style="font-size: 0.8125rem; color: #64748b;">Are you a Panchayat Official? Regional Admin Console ↗</a>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </main>
+
+  <script src="js/config.js"></script>
+  <script src="js/api.js"></script>
+  <script src="js/auth.js"></script>
+  <script>
+    CitizenAuth.redirectIfAuthenticated();
+
+    const alertBox = document.getElementById('alert-box');
+
+    const showAlert = (msg, isError = true) => {
+      alertBox.style.display = 'block';
+      alertBox.style.backgroundColor = isError ? '#fef2f2' : '#f0fdf4';
+      alertBox.style.color = isError ? '#991b1b' : '#166534';
+      alertBox.style.border = `1px solid ${isError ? '#fecaca' : '#bbf7d0'}`;
+      alertBox.textContent = msg;
+    };
+
+    const urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.get('action') === 'logged_out') {
+      showAlert('You have been signed out successfully.', false);
+    } else if (urlParams.get('session') === 'expired') {
+      showAlert('Your session expired. Please sign in again.');
+    }
+
+    function autofillDemo(who = 'rajesh') {
+      if (who === 'sunita') {
+        document.getElementById('login-mobile').value = '9876543211';
+        document.getElementById('login-password').value = 'password123';
+        showToast('Autofilled demo credentials for Sunita Devi (Khed Shivapur GP)', 'info');
+      } else {
+        document.getElementById('login-mobile').value = '9876543210';
+        document.getElementById('login-password').value = 'password123';
+        showToast('Autofilled demo credentials for Rajesh Kumar (Rampur GP)', 'info');
+      }
+    }
+
+    async function handleLoginSubmit(e) {
+      e.preventDefault();
+      alertBox.style.display = 'none';
+
+      const mobile = document.getElementById('login-mobile').value.trim();
+      const password = document.getElementById('login-password').value;
+
+      const submitBtn = document.getElementById('btn-login-submit');
+      submitBtn.disabled = true;
+      submitBtn.textContent = 'Verifying Credentials...';
+
+      try {
+        const res = await GramSetuAPI.post('/auth/login', { mobile, password });
+
+        if (res.success) {
+          if (res.user.role !== 'citizen') {
+            showAlert('This account is registered as an Administrative official. Please use the Regional Admin Portal.');
+            submitBtn.disabled = false;
+            submitBtn.textContent = 'Sign In to Dashboard →';
+            return;
+          }
+
+          CitizenAuth.setSession(res.token, res.user);
+          showToast(`Welcome back, ${res.user.name}!`, 'success');
+
+          setTimeout(() => {
+            const redirect = urlParams.get('redirect') ? decodeURIComponent(urlParams.get('redirect')) : 'dashboard.html';
+            window.location.href = redirect;
+          }, 600);
+        }
+      } catch (err) {
+        showAlert(err.message || 'Invalid mobile number or password.');
+        submitBtn.disabled = false;
+        submitBtn.textContent = 'Sign In to Dashboard →';
+      }
+    }
+  </script>
+</body>
+</html>
