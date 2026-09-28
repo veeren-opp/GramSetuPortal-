@@ -55,23 +55,23 @@
         <form id="register-form" onsubmit="handleRegisterSubmit(event)">
           
           <div class="form-group">
-            <label class="form-label">Full Legal Name <span class="req">*</span></label>
-            <input type="text" id="reg-name" class="form-control" placeholder="e.g. Ramesh Kumar Sharma" required>
+            <label class="form-label">Full Name <span class="req">*</span></label>
+            <input type="text" id="reg-name" class="form-control" placeholder="e.g. Your Name" required>
           </div>
 
           <div class="form-row">
             <div class="form-group">
-              <label class="form-label">10-Digit Mobile Number <span class="req">*</span></label>
+              <label class="form-label"> Mobile Number <span class="req">*</span></label>
               <div style="display: flex; gap: 0.5rem;">
                 <span style="display: flex; align-items: center; padding: 0 0.75rem; background: #f1f5f9; border: 1.5px solid #d1d5db; border-radius: var(--radius-sm); font-size: 0.875rem; font-weight: 700; color: #475569;">+91</span>
-                <input type="tel" id="reg-mobile" class="form-control" placeholder="9876543210" pattern="[0-9]{10}" maxlength="10" required>
+                <input type="tel" id="reg-mobile" class="form-control" placeholder="+91 xxxxx xxxxx" pattern="[0-9]{10}" maxlength="10" required>
               </div>
               <div style="font-size: 0.75rem; color: var(--text-muted); margin-top: 0.25rem;">OTP will be sent to this number for verification.</div>
             </div>
 
             <div class="form-group">
               <label class="form-label">Email Address <span style="color: var(--text-muted); font-weight: normal;">(Optional)</span></label>
-              <input type="email" id="reg-email" class="form-control" placeholder="ramesh@example.com">
+              <input type="email" id="reg-email" class="form-control" placeholder="exampl@gmail.com">
             </div>
           </div>
 
